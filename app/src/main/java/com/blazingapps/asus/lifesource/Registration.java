@@ -1,5 +1,10 @@
 package com.blazingapps.asus.lifesource;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Registration extends AppCompatActivity implements RegistrationHospitalFragment.OnFragmentInteractionListener,RegistrationBloodDonorFragment.OnFragmentInteractionListener{
 
@@ -36,6 +42,7 @@ public class Registration extends AppCompatActivity implements RegistrationHospi
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

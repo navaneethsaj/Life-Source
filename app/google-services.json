@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1021903377790",
+    "firebase_url": "https://life-source-277b9.firebaseio.com",
+    "project_id": "life-source-277b9",
+    "storage_bucket": "life-source-277b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021903377790:android:ef8b38bb528ccc85",
+        "android_client_info": {
+          "package_name": "com.blazingapps.asus.lifesource"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021903377790-847a29huhq8mgmvp9uha3mo0548d9tj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blazingapps.asus.lifesource",
+            "certificate_hash": "b7f2dcf8046442d7d287a1f97eaadea8270835e4"
+          }
+        },
+        {
+          "client_id": "1021903377790-bltpb8hl0c20nh4tebucut9j97r3uplf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKf_QsRXFCdEFc95Cr5guPRKq8zCOkXlA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1021903377790-bltpb8hl0c20nh4tebucut9j97r3uplf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

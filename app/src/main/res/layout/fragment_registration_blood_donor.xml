@@ -6,76 +6,246 @@
     tools:context=".RegistrationBloodDonorFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:orientation="vertical"
-            android:background="@drawable/gradient_regview"
             android:layout_width="match_parent"
-            android:padding="4dp"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/namelayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="Name"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-                <EditText
-                    android:inputType="textPersonName"
-                    android:id="@+id/donor_name"
+                    android:orientation="vertical"
+                    android:background="@drawable/gradient_regview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    android:padding="4dp"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/namelayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:text="Name"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:id="@+id/bname"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/contactnolayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:text="Contact no"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:id="@+id/contactno"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/bloodgrouplayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:text="Blood Group"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content" />
+                        <Spinner
+                            android:id="@+id/bgroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        </Spinner>
+                    </LinearLayout>
+                </LinearLayout>
             <LinearLayout
-                android:id="@+id/contactnolayout"
+                android:elevation="8dp"
                 android:layout_width="match_parent"
+                android:id="@+id/locationlayout"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@color/white"
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                android:orientation="vertical">
                 <TextView
-                    android:text="Contact no"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-                <EditText
-                    android:inputType="phone"
-                    android:id="@+id/contact_number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/emaillayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="Email"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-                <EditText
-                    android:id="@+id/email"
-                    android:inputType="textEmailAddress"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textcolor"
+                    android:gravity="center"
+                    android:text="Is this your location ?"/>
+
+                <Button
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:id="@+id/locate"
+                    android:text="LOCATE"
+                    android:textColor="@color/white"
+                    android:background="@drawable/gradient_button"
+                    android:layout_margin="4dp"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bloodgrouplayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="Blood Group"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-                <EditText
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/addressview"
+                        android:gravity="right"
+                        android:textColor="@color/textcolor" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="City"/>
+                    <TextView
+                        android:id="@+id/cityview"
+                        android:layout_width="match_parent"
+                        android:gravity="right"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textcolor" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="State"/>
+                    <TextView
+                        android:id="@+id/stateview"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textcolor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Country"/>
+                    <TextView
+                        android:id="@+id/countryview"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textcolor" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Postal Code"/>
+                    <TextView
+                        android:id="@+id/postalcodeview"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textcolor" />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Known Name"/>
+                    <TextView
+                        android:id="@+id/knownameview"
+                        android:layout_width="match_parent"
+                        android:gravity="right"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textcolor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Latitude"/>
+
+                    <TextView
+                        android:id="@+id/latitudeview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textColor="@color/textcolor" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Longitude"/>
+                    <TextView
+                        android:id="@+id/longitudeview"
+                        android:gravity="right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textcolor" />
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
+    </ScrollView>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
+        android:id="@+id/nextbutton"
         android:textColor="@color/white"
         android:background="@drawable/gradient_button"
         android:text="Next" />

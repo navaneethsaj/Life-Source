@@ -1,6 +1,7 @@
 package com.blazingapps.asus.lifesource;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -63,7 +64,9 @@ public class RegistrationHospitalFragment extends Fragment {
     private static final String EMAIL = "email";
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
-
+    private static final String HOSPITAL_ID = "hospitalid";
+    private static final String REGISTERED = "registered";
+    private static final String ADMIN = "admin";
 
 
 
@@ -71,6 +74,8 @@ public class RegistrationHospitalFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    EditText name,contactno,bloodgroup;
+    LocationCallback locationCallback;
     AlertDialog gpsdialog , regdialog;
     AlertDialog.Builder gpsbuilder , regbuilder;
 
@@ -158,7 +163,9 @@ public class RegistrationHospitalFragment extends Fragment {
                     }
                 }
             };
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            locationCallback = mLocationCallback;
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -176,12 +183,13 @@ public class RegistrationHospitalFragment extends Fragment {
     }
 
 
+    @SuppressLint("MissingPermission")
     public void locateUser(){
         locationlayout.setEnabled(false);
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},REQCODE);
-        }else {
+//        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},REQCODE);
+//        }else {
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                         @Override
@@ -231,7 +239,6 @@ public class RegistrationHospitalFragment extends Fragment {
                             }
                         }
                     });
-        }
         locationlayout.setEnabled(true);
     }
 
@@ -239,6 +246,9 @@ public class RegistrationHospitalFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d("grandreslength", String.valueOf(grantResults.length));
+        if (gpsdialog.isShowing()){
+            gpsdialog.dismiss();
+        }
         switch (requestCode)
         {
             case REQCODE:
@@ -347,7 +357,7 @@ public class RegistrationHospitalFragment extends Fragment {
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             FirebaseUser user = authResult.getUser();
-                            String userauthtoken = user.getUid();
+                            final String userauthtoken = user.getUid();
                             Log.d("usertoken",userauthtoken);
                             Log.d("auth :","success");
 
@@ -370,6 +380,9 @@ public class RegistrationHospitalFragment extends Fragment {
                                             editor.putString(EMAIL,email);
                                             editor.putFloat(LATITUDE,latitude);
                                             editor.putFloat(LONGITUDE,longitude);
+                                            editor.putString(HOSPITAL_ID,userauthtoken);
+                                            editor.putString(ADMIN,"hospital");
+                                            editor.putBoolean(REGISTERED,true);
                                             editor.commit();
 
                                             Toast.makeText(getActivity(),"Hospital Registered",Toast.LENGTH_LONG).show();
@@ -383,6 +396,10 @@ public class RegistrationHospitalFragment extends Fragment {
                                             if (alertDialog.isShowing()){
                                                 alertDialog.dismiss();
                                             }
+
+
+                                            LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(locationCallback);
+
 
                                             Intent in = new Intent(getActivity(),MainActivity.class);
                                             startActivity(in);

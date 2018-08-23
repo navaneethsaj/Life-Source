@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -187,19 +189,20 @@ public class DonorHome extends AppCompatActivity {
 //                                    knownname = addresses.get(0).getFeatureName();
 
                                     addressglobal = address;
+                                    paddress.setText(address);
+                                    editor.putString(DONOR_ADDRESS,address);
+                                    editor.putFloat(DONOR_LATITUDE, (float) location.getLatitude());
+                                    editor.putFloat(DONOR_LONGITUDE, (float) location.getLongitude());
+                                    editor.commit();
+                                    platitude.setText(String.valueOf(location.getLatitude()));
+                                    plongitude.setText(String.valueOf(location.getLongitude()));
                                     //Toast.makeText(getActivity(),address,Toast.LENGTH_SHORT).show();
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                paddress.setText(address);
-                                editor.putString(DONOR_ADDRESS,address);
-                                editor.putFloat(DONOR_LATITUDE, (float) location.getLatitude());
-                                editor.putFloat(DONOR_LONGITUDE, (float) location.getLongitude());
-                                editor.commit();
-                                platitude.setText(String.valueOf(location.getLatitude()));
-                                plongitude.setText(String.valueOf(location.getLongitude()));
+
                                 //Toast.makeText(getActivity(),loc,Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getApplicationContext(),"Update Successful",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),"Update Successful",Toast.LENGTH_SHORT).show();
 
                                 Log.d("locationz",loc);
 
@@ -245,6 +248,9 @@ public class DonorHome extends AppCompatActivity {
     }
 
     public void updateFirebaseDataBase(){
+        updatelocationButton.startAnimation(
+                AnimationUtils.loadAnimation(this, R.anim.rotation) );
+        updatelocationButton.setEnabled(false);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(DONOR_REF);
         HashMap<String ,Object> hashMap = new HashMap<>();
@@ -254,7 +260,16 @@ public class DonorHome extends AppCompatActivity {
         myRef.child(sharedPreferences.getString(PUSH_KEY,"")).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(),"Updated DB",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Synchronized",Toast.LENGTH_SHORT).show();
+                updatelocationButton.setEnabled(true);
+                updatelocationButton.clearAnimation();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                updatelocationButton.setEnabled(true);
+                updatelocationButton.clearAnimation();
             }
         });
     }

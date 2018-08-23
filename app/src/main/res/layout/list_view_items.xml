@@ -2,26 +2,50 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@drawable/gradient_listitem"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <LinearLayout
+        android:elevation="8dp"
+        android:layout_margin="10dp"
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:textColor="@color/textcolor"
         android:layout_height="wrap_content"
-        android:id="@+id/name"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="@color/textcolor"
-        android:layout_height="wrap_content"
-        android:id="@+id/distance"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="@color/textcolor"
-        android:layout_height="wrap_content"
-        android:id="@+id/mobile"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="@color/textcolor"
-        android:layout_height="wrap_content"
-        android:id="@+id/bloodgroup"/>
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/textcolor"
+                android:layout_height="wrap_content"
+                android:id="@+id/name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/textcolor"
+                android:layout_height="wrap_content"
+                android:id="@+id/distance"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/textcolor"
+                android:layout_height="wrap_content"
+                android:id="@+id/mobile"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/textcolor"
+                android:layout_height="wrap_content"
+                android:id="@+id/bloodgroup"/>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/callicon"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/phoneicon"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -7,61 +7,107 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:paddingBottom="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <LinearLayout
-                    android:orientation="vertical"
-                    android:background="@drawable/gradient_regview"
+                android:orientation="vertical"
+                android:background="@drawable/gradient_white"
+                android:paddingBottom="15dp"
+                android:layout_width="match_parent"
+                android:elevation="8dp"
+                android:layout_marginVertical="4dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="match_parent">
+                <TextView
                     android:layout_width="match_parent"
-                    android:padding="4dp"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:gravity="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:paddingVertical="3dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/gradient_subtitle"/>
                     <LinearLayout
+                        android:paddingHorizontal="10dp"
+                        android:paddingBottom="10dp"
                         android:id="@+id/namelayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"
                         android:orientation="horizontal">
                         <TextView
                             android:text="Name"
+                            android:textColor="@color/textcolor"
                             android:layout_width="100dp"
+                            android:layout_gravity="bottom"
+                            android:textSize="14sp"
                             android:layout_height="wrap_content" />
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
+                            android:textSize="14sp"
+                            android:textColor="@color/textcolor"
+                            android:layout_gravity="bottom"
                             android:id="@+id/bname"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:paddingHorizontal="10dp"
                         android:id="@+id/contactnolayout"
+                        android:paddingBottom="10dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
                             android:text="Contact no"
+                            android:textColor="@color/textcolor"
+                            android:layout_gravity="bottom"
                             android:layout_width="100dp"
+                            android:textSize="14sp"
                             android:layout_height="wrap_content" />
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
+                            android:textColor="@color/textcolor"
+                            android:textSize="14sp"
+                            android:layout_gravity="bottom"
                             android:id="@+id/contactno"/>
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingHorizontal="10dp"
                         android:id="@+id/bloodgrouplayout"
+                        android:paddingBottom="10dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <TextView
                             android:text="Blood Group"
                             android:layout_width="100dp"
+                            android:textSize="14sp"
+                            android:layout_gravity="bottom"
+                            android:textColor="@color/textcolor"
                             android:layout_height="wrap_content" />
                         <Spinner
                             android:id="@+id/bgroup"
                             android:layout_width="match_parent"
+                            android:layout_gravity="bottom"
+                            android:textSize="14sp"
+                            android:textColor="@color/textcolor"
                             android:layout_height="wrap_content">
 
                         </Spinner>
@@ -72,170 +118,202 @@
                 android:layout_width="match_parent"
                 android:id="@+id/locationlayout"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_margin="8dp"
-                android:padding="4dp"
+                android:background="@drawable/gradient_white"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="4dp"
                 android:orientation="vertical">
                 <TextView
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:background="@drawable/gradient_subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textcolor"
+                    android:paddingVertical="3dp"
+                    android:textColor="@color/white"
                     android:gravity="center"
-                    android:text="Is this your location ?"/>
+                    android:text="Location"/>
 
                 <Button
                     android:layout_gravity="right"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:elevation="8dp"
+                    android:paddingHorizontal="10dp"
                     android:id="@+id/locate"
                     android:text="LOCATE"
                     android:textColor="@color/white"
                     android:background="@drawable/gradient_button"
-                    android:layout_margin="4dp"/>
-
-                <LinearLayout
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginHorizontal="4dp"/>
+                <View
                     android:layout_width="match_parent"
-                    android:padding="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Address"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/addressview"
-                        android:gravity="right"
-                        android:textColor="@color/textcolor" />
-                </LinearLayout>
-
+                    android:layout_height="1dp"
+                    android:background="@color/linecolor"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="City"/>
-                    <TextView
-                        android:id="@+id/cityview"
+                    android:padding="8dp"
+                    android:orientation="vertical">
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:gravity="right"
+                        android:padding="2dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textcolor" />
-                </LinearLayout>
+                        android:orientation="horizontal">
+                        <TextView
+                            android:paddingRight="30dp"
+                            android:textColor="@color/textcolor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Address"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/addressview"
+                            android:gravity="right"
+                            android:textColor="@color/textcolor" />
+                    </LinearLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:padding="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="State"/>
-                    <TextView
-                        android:id="@+id/stateview"
-                        android:gravity="right"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textcolor" />
+                        android:padding="2dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:paddingRight="30dp"
+                            android:textColor="@color/textcolor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="City"/>
+                        <TextView
+                            android:id="@+id/cityview"
+                            android:layout_width="match_parent"
+                            android:gravity="right"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor" />
+                    </LinearLayout>
 
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:padding="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:padding="2dp"
                         android:layout_height="wrap_content"
-                        android:text="Country"/>
-                    <TextView
-                        android:id="@+id/countryview"
-                        android:gravity="right"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor"
+                            android:paddingRight="30dp"
+                            android:text="State"/>
+                        <TextView
+                            android:id="@+id/stateview"
+                            android:gravity="right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:padding="2dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor"
+                            android:paddingRight="30dp"
+                            android:text="Country"/>
+                        <TextView
+                            android:id="@+id/countryview"
+                            android:gravity="right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:padding="2dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor"
+                            android:paddingRight="30dp"
+                            android:text="Postal Code"/>
+                        <TextView
+                            android:id="@+id/postalcodeview"
+                            android:gravity="right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor" />
+
+
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textcolor" />
-                </LinearLayout>
+                        android:padding="2dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor"
+                            android:paddingRight="30dp"
+                            android:text="Known Name"/>
+                        <TextView
+                            android:id="@+id/knownameview"
+                            android:layout_width="match_parent"
+                            android:gravity="right"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor" />
 
+                    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:padding="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Postal Code"/>
-                    <TextView
-                        android:id="@+id/postalcodeview"
-                        android:gravity="right"
+                    <LinearLayout
                         android:layout_width="match_parent"
+                        android:padding="2dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textcolor" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/textcolor"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="30dp"
+                            android:text="Latitude"/>
 
+                        <TextView
+                            android:id="@+id/latitudeview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textColor="@color/textcolor" />
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Known Name"/>
-                    <TextView
-                        android:id="@+id/knownameview"
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:gravity="right"
+                        android:padding="2dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textcolor" />
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor"
+                            android:paddingRight="30dp"
+                            android:text="Longitude"/>
+                        <TextView
+                            android:id="@+id/longitudeview"
+                            android:gravity="right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textcolor" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:padding="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Latitude"/>
-
-                    <TextView
-                        android:id="@+id/latitudeview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:textColor="@color/textcolor" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:padding="2dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Longitude"/>
-                    <TextView
-                        android:id="@+id/longitudeview"
-                        android:gravity="right"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/textcolor" />
-                </LinearLayout>
-
 
             </LinearLayout>
         </LinearLayout>

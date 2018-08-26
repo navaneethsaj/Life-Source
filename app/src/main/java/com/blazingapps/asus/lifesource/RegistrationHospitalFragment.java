@@ -332,6 +332,18 @@ public class RegistrationHospitalFragment extends Fragment {
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (
+                        nameview.getText().toString().length() < 3 ||
+                            addressview.getText().toString().length() < 3 ||
+                            phoneview.getText().toString().length() < 6 ||
+                            mobileview.getText().toString().length() < 8 ||
+                            emailview.getText().toString().length() < 3
+                        ){
+                            Toast.makeText(getContext(),"Enter details",Toast.LENGTH_SHORT).show();
+                            return;
+                }
+
                 final AlertDialog alertDialog;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false);

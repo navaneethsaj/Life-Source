@@ -11,14 +11,18 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,19 +55,28 @@ public class DonorHome extends AppCompatActivity {
     private static final String REGISTERED = "registered";
     private static final String PUSH_KEY = "pushkey";
     private static final String ADMIN = "admin";
+    private static final String STREAMING = "streaming";
+    private static final String AVAILABLE = "availablity";
     private static final int REQCODE = 1;
 
 
-
+    Boolean liveStream = false;
+    Boolean isAvailable = true;
     int z = 0;
 
-    TextView pname,paddress,platitude,plongitude,pcontact,pgroup;
+    AlertDialog dialog;
+    AlertDialog.Builder builder;
+
+    TextView pname,paddress,platitude,plongitude,pcontact,pgroup,availabletextview,streamingtextview;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Button updatelocationButton;
     private FusedLocationProviderClient mFusedLocationClient;
     Location currentlocation;
     String addressglobal;
+    ImageView location_pin;
+    LinearLayout availablitylayout;
+    Button livestreambutton;
 
     private FirebaseAuth mAuth;
 
@@ -77,6 +90,10 @@ public class DonorHome extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Updating").setMessage("Please wait...");
+        dialog = builder.create();
+
         pname = findViewById(R.id.bprofilename);
         paddress = findViewById(R.id.bprofileaddress);
         platitude = findViewById(R.id.blatitude);
@@ -84,6 +101,14 @@ public class DonorHome extends AppCompatActivity {
         pcontact = findViewById(R.id.bprofilecontact);
         pgroup = findViewById(R.id.bprofilegroup);
         updatelocationButton = findViewById(R.id.updatelocation);
+        location_pin = findViewById(R.id.location_pin);
+        livestreambutton = findViewById(R.id.buttonlivestream);
+        availablitylayout = findViewById(R.id.availablitylayout);
+        availabletextview = findViewById(R.id.availabletextview);
+        streamingtextview = findViewById(R.id.streamingtextview);
+
+        Animation bouncingeAnimation = AnimationUtils.loadAnimation(this, R.anim.bouncing);
+        location_pin.setAnimation(bouncingeAnimation);
 
         pname.setText(sharedPreferences.getString(DONOR_NAME,""));
         paddress.setText(sharedPreferences.getString(DONOR_ADDRESS,""));
@@ -110,6 +135,55 @@ public class DonorHome extends AppCompatActivity {
             Toast.makeText(this,"User Authenticated",Toast.LENGTH_SHORT).show();
         }
 
+        liveStream = sharedPreferences.getBoolean(STREAMING,false);
+        if (liveStream){
+            livestreambutton.setText("Disable");
+            livestreambutton.setBackgroundResource(R.drawable.gradient_buttonpositive);
+            editor.putBoolean(STREAMING,true);
+            editor.commit();
+            streamingtextview.setText("(Streaming)");
+
+        }else {
+            livestreambutton.setText("Enable");
+            editor.putBoolean(STREAMING,false);
+            livestreambutton.setBackgroundResource(R.drawable.gradient_buttonnegative);
+            editor.commit();
+            streamingtextview.setText("(Not streaming)");
+        }
+
+        isAvailable = sharedPreferences.getBoolean(AVAILABLE,true);
+        if (isAvailable){
+            availabletextview.setText("You are available");
+        }else {
+            availabletextview.setText("You are not available");
+        }
+
+        livestreambutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                liveStream = !liveStream;
+                if (liveStream){
+                    livestreambutton.setText("Disable");
+                    editor.putBoolean(STREAMING,true);
+                    editor.commit();
+                    livestreambutton.setBackgroundResource(R.drawable.gradient_buttonpositive);
+                    streamingtextview.setText("(Streaming)");
+
+                }else {
+                    livestreambutton.setText("Enable");
+                    editor.putBoolean(STREAMING,false);
+                    editor.commit();
+                    livestreambutton.setBackgroundResource(R.drawable.gradient_buttonnegative);
+                    streamingtextview.setText("(Not streaming)");
+                }
+            }
+        });
+        availablitylayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateAvailablity();
+            }
+        });
 
     }
     public void requestLocationUpdate(){
@@ -196,6 +270,11 @@ public class DonorHome extends AppCompatActivity {
                                     editor.commit();
                                     platitude.setText(String.valueOf(location.getLatitude()));
                                     plongitude.setText(String.valueOf(location.getLongitude()));
+
+                                    if (liveStream){
+                                        updateFirebaseDataBase();
+                                    }
+
                                     //Toast.makeText(getActivity(),address,Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -270,6 +349,41 @@ public class DonorHome extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
                 updatelocationButton.setEnabled(true);
                 updatelocationButton.clearAnimation();
+            }
+        });
+    }
+    public void updateAvailablity(){
+        if (!dialog.isShowing()){
+            dialog.show();
+        }
+        isAvailable = !isAvailable;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("available");
+        myRef.setValue(isAvailable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                if (isAvailable){
+                    availabletextview.setText("You are available");
+                    editor.putBoolean(AVAILABLE,true);
+                    editor.commit();
+                }else {
+                    availabletextview.setText("You are not available");
+                    editor.putBoolean(AVAILABLE,false);
+                    editor.commit();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                isAvailable = !isAvailable;
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
             }
         });
     }

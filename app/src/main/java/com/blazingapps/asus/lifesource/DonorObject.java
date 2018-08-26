@@ -9,6 +9,8 @@ public class DonorObject {
     float latitude;
     float longitude;
 
+    boolean available = true;
+
     public DonorObject(String name, String bloodgroup, String contactno, String address, float latitude, float longitude) {
         this.name = name;
         this.bloodgroup = bloodgroup;
@@ -40,5 +42,13 @@ public class DonorObject {
 
     public float getLongitude() {
         return longitude;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

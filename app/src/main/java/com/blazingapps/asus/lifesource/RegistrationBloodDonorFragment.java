@@ -220,6 +220,15 @@ public class RegistrationBloodDonorFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                if (ename.getText().toString().length() < 2 || econtact.getText().toString().length()<8 ){
+                    Toast.makeText(getContext(),"Enter details",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (spinner.getSelectedItemPosition() == 0 ){
+                    Toast.makeText(getContext(),"Select Blood Group",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 final AlertDialog alertDialog;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false);

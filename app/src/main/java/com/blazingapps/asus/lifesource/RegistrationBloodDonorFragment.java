@@ -38,15 +38,19 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -75,6 +79,7 @@ public class RegistrationBloodDonorFragment extends Fragment {
     private static final String ADMIN = "admin";
     private static final String PUSH_KEY = "pushkey";
 
+    boolean isphoneVerified = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -228,7 +233,10 @@ public class RegistrationBloodDonorFragment extends Fragment {
                     Toast.makeText(getContext(),"Select Blood Group",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                if (!isphoneVerified) {
+                    phoneNoVerification(econtact.getText().toString());
+                    return;
+                }
                 final AlertDialog alertDialog;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false);
@@ -479,5 +487,50 @@ public class RegistrationBloodDonorFragment extends Fragment {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+    private void phoneNoVerification(String s){
+                String phoneNumber = "+91" + s;
+                final AlertDialog dialog = new AlertDialog.Builder(getContext()).setCancelable(false).setTitle("Verifying Phone No").setMessage("Please Wait...").create();
+                if (!dialog.isShowing()){
+                    dialog.show();
+                }
+                PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                        Toast.makeText(getActivity(),"Phone Verified",Toast.LENGTH_SHORT).show();
+                        isphoneVerified = true;
+                        nextbutton.callOnClick();
+                        if (dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        Log.d("phone", String.valueOf(e));
+                        Toast.makeText(getActivity(),"Phone Verification Failed",Toast.LENGTH_SHORT).show();
+                        isphoneVerified = false;
+                        if (dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCodeAutoRetrievalTimeOut(String s) {
+                        super.onCodeAutoRetrievalTimeOut(s);
+                        Log.d("firebase phone",s);
+                        Toast.makeText(getActivity(),"Phone Verification Timed Out",Toast.LENGTH_SHORT).show();
+                        isphoneVerified = false;
+                        if (dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+                };
+                PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                        phoneNumber,        // Phone number to verify
+                        60,                 // Timeout duration
+                        TimeUnit.SECONDS,   // Unit of timeout
+                        getActivity(),               // Activity (for callback binding)
+                        mCallbacks);
     }
 }

@@ -64,14 +64,14 @@
                     android:orientation="vertical"
                     android:id="@+id/profilelayout"
                     android:elevation="8dp"
-                    android:layout_marginVertical="5dp"
+                    android:layout_marginVertical="10dp"
                     android:layout_marginHorizontal="8dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:elevation="8dp"
+                        android:elevation="4dp"
                         android:textSize="18dp"
                         android:textColor="@color/white"
                         android:textStyle="bold"
@@ -85,12 +85,13 @@
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:layout_gravity="center"
+                            android:padding="10dp"
                             android:gravity="center"
                             android:layout_height="wrap_content">
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/blooddrop"/>
+                                android:src="@drawable/profilehead"/>
                         </LinearLayout>
                         <View
                             android:layout_width="1dp"
@@ -130,13 +131,14 @@
                     android:elevation="8dp"
                     android:background="@drawable/gradient_white"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginVertical="5dp"
+                    android:layout_marginVertical="10dp"
                     android:layout_below="@id/profilelayout"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="18dp"
+                        android:elevation="4dp"
                         android:background="@drawable/gradient_subtitle"
                         android:textColor="@color/white"
                         android:text="Location"
@@ -190,19 +192,10 @@
                                 android:elevation="8dp"
                                 android:layout_marginHorizontal="8dp"
                                 android:id="@+id/updatelocation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
                                 android:textColor="@color/white"
                                 android:background="@drawable/sync_doodle" />
-                            <TextView
-                                android:textColor="@color/textcolor"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sync"/>
                         </LinearLayout>
                     </LinearLayout>
                     <View
@@ -213,19 +206,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
                         android:id="@+id/livestreamlayout"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="30dp"
+                            android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="15dp"
-                            android:id="@+id/location_pin"
-                            android:src="@drawable/ic_tracker_1093167"/>
+                            android:id="@+id/location_cloud"
+                            android:src="@drawable/cloudbroadcast"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical"
+                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:layout_height="wrap_content">
                             <TextView
                                 android:text="Live Stream"
@@ -256,7 +253,7 @@
                     android:layout_below="@+id/locationlayout"
                     android:id="@+id/availablitylayout"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginVertical="5dp"
+                    android:layout_marginVertical="10dp"
                     android:elevation="8dp"
                     android:background="@drawable/gradient_white"
                     android:layout_width="match_parent"
@@ -265,6 +262,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
+                        android:elevation="4dp"
                         android:textSize="18dp"
                         android:gravity="center"
                         android:textStyle="bold"
@@ -296,17 +294,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <ImageView
-                                android:background="@drawable/gradient_selected"
-                                android:layout_width="40dp"
+                                android:id="@+id/tickimg"
+                                android:layout_width="50dp"
                                 android:layout_marginHorizontal="10dp"
-                                android:layout_height="40dp"
-                                android:padding="2dp"
+                                android:layout_height="50dp"
+                                android:padding="5dp"
                                 android:src="@drawable/tick"/>
                             <ImageView
-                                android:layout_width="40dp"
+                                android:id="@+id/crossimg"
+                                android:layout_width="50dp"
                                 android:layout_marginHorizontal="10dp"
-                                android:layout_height="40dp"
-                                android:padding="2dp"
+                                android:layout_height="50dp"
+                                android:padding="5dp"
                                 android:src="@drawable/unavailable"/>
                         </LinearLayout>
                     </LinearLayout>

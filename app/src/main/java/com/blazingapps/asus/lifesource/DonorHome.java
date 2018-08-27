@@ -74,9 +74,10 @@ public class DonorHome extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     Location currentlocation;
     String addressglobal;
-    ImageView location_pin;
     LinearLayout availablitylayout;
     Button livestreambutton;
+
+    ImageView animcloud, tickimg,crossimg;
 
     private FirebaseAuth mAuth;
 
@@ -101,14 +102,14 @@ public class DonorHome extends AppCompatActivity {
         pcontact = findViewById(R.id.bprofilecontact);
         pgroup = findViewById(R.id.bprofilegroup);
         updatelocationButton = findViewById(R.id.updatelocation);
-        location_pin = findViewById(R.id.location_pin);
         livestreambutton = findViewById(R.id.buttonlivestream);
         availablitylayout = findViewById(R.id.availablitylayout);
         availabletextview = findViewById(R.id.availabletextview);
         streamingtextview = findViewById(R.id.streamingtextview);
+        animcloud = findViewById(R.id.location_cloud);
+        tickimg = findViewById(R.id.tickimg);
+        crossimg = findViewById(R.id.crossimg);
 
-        Animation bouncingeAnimation = AnimationUtils.loadAnimation(this, R.anim.bouncing);
-        location_pin.setAnimation(bouncingeAnimation);
 
         pname.setText(sharedPreferences.getString(DONOR_NAME,""));
         paddress.setText(sharedPreferences.getString(DONOR_ADDRESS,""));
@@ -142,6 +143,8 @@ public class DonorHome extends AppCompatActivity {
             editor.putBoolean(STREAMING,true);
             editor.commit();
             streamingtextview.setText("(Streaming)");
+            animcloud.startAnimation(
+                    AnimationUtils.loadAnimation(this, R.anim.blink) );
 
         }else {
             livestreambutton.setText("Enable");
@@ -154,8 +157,12 @@ public class DonorHome extends AppCompatActivity {
         isAvailable = sharedPreferences.getBoolean(AVAILABLE,true);
         if (isAvailable){
             availabletextview.setText("You are available");
+            tickimg.setBackground(getDrawable(R.drawable.gradient_selected));
+            crossimg.setBackground(null);
         }else {
             availabletextview.setText("You are not available");
+            crossimg.setBackground(getDrawable(R.drawable.gradient_selected));
+            tickimg.setBackground(null);
         }
 
         livestreambutton.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +175,8 @@ public class DonorHome extends AppCompatActivity {
                     editor.commit();
                     livestreambutton.setBackgroundResource(R.drawable.gradient_buttonpositive);
                     streamingtextview.setText("(Streaming)");
+                    animcloud.startAnimation(
+                            AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink) );
 
                 }else {
                     livestreambutton.setText("Enable");
@@ -175,6 +184,7 @@ public class DonorHome extends AppCompatActivity {
                     editor.commit();
                     livestreambutton.setBackgroundResource(R.drawable.gradient_buttonnegative);
                     streamingtextview.setText("(Not streaming)");
+                    animcloud.clearAnimation();
                 }
             }
         });
@@ -369,9 +379,13 @@ public class DonorHome extends AppCompatActivity {
                 if (isAvailable){
                     availabletextview.setText("You are available");
                     editor.putBoolean(AVAILABLE,true);
+                    tickimg.setBackground(getDrawable(R.drawable.gradient_selected));
+                    crossimg.setBackground(null);
                     editor.commit();
                 }else {
                     availabletextview.setText("You are not available");
+                    tickimg.setBackground(null);
+                    crossimg.setBackground(getDrawable(R.drawable.gradient_selected));
                     editor.putBoolean(AVAILABLE,false);
                     editor.commit();
                 }

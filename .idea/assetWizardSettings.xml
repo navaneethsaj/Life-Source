@@ -45,8 +45,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_tracker_1093167" />
-                            <entry key="sourceFile" value="C:\Users\ASUS\Downloads\tracker-1093167.svg" />
+                            <entry key="height" value="69" />
+                            <entry key="outputName" value="ic_availablity" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\ASUS\Desktop\ED\availablity.svg" />
+                            <entry key="width" value="378" />
                           </map>
                         </option>
                       </PersistentState>

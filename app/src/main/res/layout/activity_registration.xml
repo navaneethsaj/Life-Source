@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/registration">
@@ -30,7 +30,7 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

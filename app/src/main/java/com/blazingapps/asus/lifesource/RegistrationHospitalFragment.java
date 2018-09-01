@@ -71,6 +71,7 @@ public class RegistrationHospitalFragment extends Fragment {
     private static final String HOSPITAL_ID = "hospitalid";
     private static final String REGISTERED = "registered";
     private static final String ADMIN = "admin";
+    private static final String PUSH_KEY = "pushkey";
 
     private boolean isphoneVerified = false;
 
@@ -387,9 +388,12 @@ public class RegistrationHospitalFragment extends Fragment {
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference myRef = database.getReference(HOSPITAL_REF);
+                            String key = myRef.push().getKey();
+                            editor.putString(PUSH_KEY,key);
+                            editor.commit();
 
                             HospitalObject hospitalObject = new HospitalObject(name,address,phone,mobile,fax,email,latitude,longitude,userauthtoken);
-                            myRef.push().setValue(hospitalObject)
+                            myRef.child(key).setValue(hospitalObject)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

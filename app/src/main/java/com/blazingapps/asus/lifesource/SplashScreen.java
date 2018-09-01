@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static final int SPLASH_DISPLAY_LENGTH = 500;
+    private static final int SPLASH_DISPLAY_LENGTH = 1500;
     SharedPreferences sharedPreferences;
     private static final String MYPREF = "mypreferences";
     private static final String NAME = "name";

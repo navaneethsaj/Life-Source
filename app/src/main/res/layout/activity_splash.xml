@@ -5,20 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashScreen"
-    android:background="@color/white">
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/cross" />
-    <TextView
-        android:layout_above="@id/icon"
-        android:textColor="@color/textcolor"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:padding="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Life Source"/>
+    android:background="@drawable/splashscreen">
+
 </RelativeLayout>

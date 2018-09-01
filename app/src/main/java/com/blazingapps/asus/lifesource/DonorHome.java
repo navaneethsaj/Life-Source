@@ -11,16 +11,16 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,11 +37,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class DonorHome extends AppCompatActivity {
     private static final String DONOR_REF = "blooddonors";
@@ -70,11 +68,12 @@ public class DonorHome extends AppCompatActivity {
     TextView pname,paddress,platitude,plongitude,pcontact,pgroup,availabletextview,streamingtextview;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    ImageView bloodImageView;
     Button updatelocationButton;
     private FusedLocationProviderClient mFusedLocationClient;
     Location currentlocation;
     String addressglobal;
-    LinearLayout availablitylayout;
+    LinearLayout availablitylayout, profilelayout;
     Button livestreambutton;
 
     ImageView animcloud, tickimg,crossimg;
@@ -92,7 +91,7 @@ public class DonorHome extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         builder = new AlertDialog.Builder(this);
-        builder.setTitle("Updating").setMessage("Please wait...");
+        builder.setTitle("Updating").setMessage("Please wait...").setCancelable(false);
         dialog = builder.create();
 
         pname = findViewById(R.id.bprofilename);
@@ -108,7 +107,9 @@ public class DonorHome extends AppCompatActivity {
         streamingtextview = findViewById(R.id.streamingtextview);
         animcloud = findViewById(R.id.location_cloud);
         tickimg = findViewById(R.id.tickimg);
+        profilelayout = findViewById(R.id.profilelayout);
         crossimg = findViewById(R.id.crossimg);
+        bloodImageView = findViewById(R.id.bloodgroupImageview);
 
 
         pname.setText(sharedPreferences.getString(DONOR_NAME,""));
@@ -118,6 +119,7 @@ public class DonorHome extends AppCompatActivity {
         pcontact.setText(sharedPreferences.getString(DONOR_CONTACT,""));
         pgroup.setText(sharedPreferences.getString(DONOR_GROUP,""));
 
+        bloodImageView.setImageResource(getBloodGroupImage(sharedPreferences.getString(DONOR_GROUP,"")));
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -133,7 +135,7 @@ public class DonorHome extends AppCompatActivity {
         if (mAuth == null){
             Toast.makeText(this,"User not authenticated",Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this,"User Authenticated",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"User Authenticated",Toast.LENGTH_SHORT).show();
         }
 
         liveStream = sharedPreferences.getBoolean(STREAMING,false);
@@ -195,7 +197,48 @@ public class DonorHome extends AppCompatActivity {
             }
         });
 
+        profilelayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updatePhoneNo();
+            }
+        });
+
     }
+
+    private void updatePhoneNo() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        editText.setPadding(20,20,20,20);
+        builder.setTitle("Phone Number").setView(editText).setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final String phoneno = editText.getText().toString();
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF);
+                HashMap<String ,Object> hashMap = new HashMap<>();
+                hashMap.put("contactno",phoneno);
+                myRef.child(sharedPreferences.getString(PUSH_KEY,"")).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                        editor.putString(DONOR_CONTACT,phoneno);
+                        editor.commit();
+                        pcontact.setText(phoneno);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).setNegativeButton("Cancel",null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     public void requestLocationUpdate(){
         //z++;
         //Log.d("countzzzzz", String.valueOf(z));
@@ -349,7 +392,7 @@ public class DonorHome extends AppCompatActivity {
         myRef.child(sharedPreferences.getString(PUSH_KEY,"")).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(),"Synchronized",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Synchronized",Toast.LENGTH_SHORT).show();
                 updatelocationButton.setEnabled(true);
                 updatelocationButton.clearAnimation();
             }
@@ -400,5 +443,29 @@ public class DonorHome extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private int getBloodGroupImage(String group){
+        switch (group)
+        {
+            case "A+":
+                return R.drawable.aplus;
+            case "A-":
+                return R.drawable.aminus;
+            case "B+":
+                return R.drawable.bplus;
+            case "B-":
+                return R.drawable.bminus;
+            case "O+":
+                return R.drawable.oplus;
+            case "O-":
+                return R.drawable.ominus;
+            case "AB+":
+                return R.drawable.abplus;
+            case "AB-":
+                return R.drawable.abminus;
+                default:
+                    return 0;
+        }
     }
 }

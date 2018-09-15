@@ -24,13 +24,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Registration"
             android:label="@string/title_activity_registration"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
+            android:screenOrientation="portrait"
             android:name=".DonorHome"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

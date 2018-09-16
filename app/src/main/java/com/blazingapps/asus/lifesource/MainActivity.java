@@ -5,18 +5,21 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,15 +58,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    TextView nameProf,addressProf,mobileProf;
-    LinearLayout searchresulttextview, profilelayout;
+    TextView nameProf,addressProf,mobileProf,telprof,faxProf,emailProf,latProf,longProf,tokenProf;
+    LinearLayout searchresulttextview, profilelayout,finddonorlayout;
     Button buttonfinddonor;
     ListView listView;
     SharedPreferences sharedPreferences;
     Spinner spinner;
     SharedPreferences.Editor editor;
+    RelativeLayout developerlayout;
     AlertDialog searchingdialog;
     AlertDialog.Builder searchingbuilder;
+    BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -78,11 +83,20 @@ public class MainActivity extends AppCompatActivity {
         addressProf = findViewById(R.id.profaddress);
         mobileProf = findViewById(R.id.profmobile);
         buttonfinddonor = findViewById(R.id.finddonorbutton);
+        finddonorlayout = findViewById(R.id.finddonorlayout);
+        latProf = findViewById(R.id.proflatitude);
+        longProf = findViewById(R.id.proflongitude);
+        tokenProf = findViewById(R.id.profhospitalid);
         listView = findViewById(R.id.listviewdonors);
         spinner = findViewById(R.id.spinner);
         searchresulttextview = findViewById(R.id.resultlayout);
         searchresulttextview.setVisibility(View.GONE);
         profilelayout = findViewById(R.id.profilelayout);
+        bottomNavigationView = findViewById(R.id.bottomnavigator);
+        developerlayout = findViewById(R.id.developerlayout);
+        telprof = findViewById(R.id.proftel);
+        faxProf = findViewById(R.id.proffax);
+        emailProf = findViewById(R.id.profemail);
 
         profilelayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         searchingbuilder = new AlertDialog.Builder(this);
-        searchingbuilder.setTitle("Searching").setMessage("Please Wait...");
+        searchingbuilder.setTitle("Searching").setMessage("Please Wait...").setCancelable(false);
         searchingdialog = searchingbuilder.create();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -108,12 +122,22 @@ public class MainActivity extends AppCompatActivity {
         nameProf.setText(sharedPreferences.getString(NAME,""));
         addressProf.setText(sharedPreferences.getString(ADDRESS,""));
         mobileProf.setText(sharedPreferences.getString(MOBILE,""));
+        telprof.setText(sharedPreferences.getString(PHONE,""));
+        faxProf.setText(sharedPreferences.getString(FAX,""));
+        emailProf.setText(sharedPreferences.getString(EMAIL,""));
+        latProf.setText(String.valueOf(sharedPreferences.getFloat(LATITUDE,0)));
+        longProf.setText(String.valueOf(sharedPreferences.getFloat(LONGITUDE,0)));
+        tokenProf.setText(sharedPreferences.getString(PUSH_KEY,""));
 
         buttonfinddonor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String URL = "https://us-central1-life-source-277b9.cloudfunctions.net/getdonor?";
                 String group = spinner.getSelectedItem().toString();
+                if (group.equals("Select Blood Group")){
+                    Toast.makeText(getApplicationContext(),"Select Blood Group",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 group = group.replace("+","%2B");
                 String uid = sharedPreferences.getString(HOSPITAL_ID,"unregistered");
                 String latitude = String.valueOf(sharedPreferences.getFloat(LATITUDE,0));
@@ -126,6 +150,34 @@ public class MainActivity extends AppCompatActivity {
                 asyncTask.execute(url);
             }
         });
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.action_profile:
+                        profilelayout.setVisibility(View.VISIBLE);
+                        finddonorlayout.setVisibility(View.GONE);
+                        searchresulttextview.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_search:
+                        searchresulttextview.setVisibility(View.VISIBLE);
+                        finddonorlayout.setVisibility(View.VISIBLE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_developers:
+                        searchresulttextview.setVisibility(View.GONE);
+                        finddonorlayout.setVisibility(View.GONE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.VISIBLE);
+                        break;
+                }
+                return true;
+            }
+        });
+        bottomNavigationView.setSelectedItemId(R.id.action_profile);
     }
     class DonorAsyncTask extends AsyncTask<String,Void,String>{
 
@@ -162,11 +214,18 @@ public class MainActivity extends AppCompatActivity {
             if (searchingdialog.isShowing()){
                 searchingdialog.dismiss();
             }
+            if (s==null){
+                Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
+                return;
+            }
             try {
                 JSONObject responseObject = new JSONObject(s);
                 Log.d("status", String.valueOf(responseObject.getInt("status")));
                 if (responseObject.getInt("status") == 200){
                     JSONArray donorArray = responseObject.getJSONArray("donors");
+                    if(donorArray.length()==0){
+                        Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
+                    }
                     ArrayList<RespDonorObj> donorObjs = new ArrayList<>();
 
                     for (int i =0 ; i < donorArray.length() ; ++i){
@@ -181,6 +240,8 @@ public class MainActivity extends AppCompatActivity {
                     DonorAdapter donorAdapter = new DonorAdapter(MainActivity.this,R.layout.list_view_items,donorObjs);
                     listView.setAdapter(donorAdapter);
                     searchresulttextview.setVisibility(View.VISIBLE);
+                }else {
+                    Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Log.d("exception","jsonexception occoured");

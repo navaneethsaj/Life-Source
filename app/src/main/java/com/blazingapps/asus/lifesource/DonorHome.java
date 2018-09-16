@@ -12,17 +12,20 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,8 +76,10 @@ public class DonorHome extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     Location currentlocation;
     String addressglobal;
-    LinearLayout availablitylayout, profilelayout;
+    LinearLayout availablitylayout, profilelayout,locationlayout;
+    RelativeLayout developerlayout;
     Button livestreambutton;
+    BottomNavigationView bottomNavigationView;
 
     ImageView animcloud, tickimg,crossimg;
 
@@ -105,12 +110,43 @@ public class DonorHome extends AppCompatActivity {
         availablitylayout = findViewById(R.id.availablitylayout);
         availabletextview = findViewById(R.id.availabletextview);
         streamingtextview = findViewById(R.id.streamingtextview);
+        developerlayout = findViewById(R.id.developerlayout);
         animcloud = findViewById(R.id.location_cloud);
+        locationlayout = findViewById(R.id.locationlayout);
         tickimg = findViewById(R.id.tickimg);
         profilelayout = findViewById(R.id.profilelayout);
         crossimg = findViewById(R.id.crossimg);
         bloodImageView = findViewById(R.id.bloodgroupImageview);
+        bottomNavigationView = findViewById(R.id.bottomnavigator);
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.action_profile:
+                        profilelayout.setVisibility(View.VISIBLE);
+                        availablitylayout.setVisibility(View.VISIBLE);
+                        locationlayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_location:
+                        locationlayout.setVisibility(View.VISIBLE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        availablitylayout.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_developers:
+                        locationlayout.setVisibility(View.GONE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.VISIBLE);
+                        availablitylayout.setVisibility(View.GONE);
+                        break;
+                }
+                return true;
+            }
+        });
+        bottomNavigationView.setSelectedItemId(R.id.action_profile);
 
         pname.setText(sharedPreferences.getString(DONOR_NAME,""));
         paddress.setText(sharedPreferences.getString(DONOR_ADDRESS,""));
@@ -381,7 +417,7 @@ public class DonorHome extends AppCompatActivity {
 
     public void updateFirebaseDataBase(){
         updatelocationButton.startAnimation(
-                AnimationUtils.loadAnimation(this, R.anim.rotation) );
+                AnimationUtils.loadAnimation(this, R.anim.upload) );
         updatelocationButton.setEnabled(false);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(DONOR_REF);

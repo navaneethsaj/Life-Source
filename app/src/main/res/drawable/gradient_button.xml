@@ -3,9 +3,9 @@
     <corners
         android:radius="15dp"/>
     <gradient
-        android:startColor="#3D94D8"
-        android:endColor="#3D94D8"/>
+        android:startColor="@color/colorPrimary"
+        android:endColor="@color/colorPrimary"/>
     <stroke
-        android:color="#077cd8"
+        android:color="#880000"
         android:width="2dp"/>
 </shape>

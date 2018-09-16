@@ -45,11 +45,9 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="69" />
-                            <entry key="outputName" value="ic_availablity" />
+                            <entry key="outputName" value="phoneicon" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\ASUS\Desktop\ED\availablity.svg" />
-                            <entry key="width" value="378" />
+                            <entry key="sourceFile" value="C:\Users\ASUS\Downloads\baseline-call-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

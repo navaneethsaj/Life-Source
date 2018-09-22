@@ -6,6 +6,12 @@
     <item android:id="@+id/action_location"
         android:title="Location"
         android:icon="@drawable/nav_loc" />
+    <item android:id="@+id/action_tips"
+        android:title="Tips"
+        android:icon="@drawable/tips"/>
+    <item android:id="@+id/action_chat"
+        android:title="Chat"
+        android:icon="@drawable/chat"/>
     <item android:id="@+id/action_developers"
         android:title="Developers"
         android:icon="@drawable/nav_dev" />

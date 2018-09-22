@@ -71,13 +71,13 @@ public class DonorHome extends AppCompatActivity {
     TextView pname,paddress,platitude,plongitude,pcontact,pgroup,availabletextview,streamingtextview;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    ImageView bloodImageView;
+    ImageView bloodImageView,askbutton,inboxbutton;
     Button updatelocationButton;
     private FusedLocationProviderClient mFusedLocationClient;
     Location currentlocation;
     String addressglobal;
     LinearLayout availablitylayout, profilelayout,locationlayout;
-    RelativeLayout developerlayout;
+    RelativeLayout developerlayout,tipslayout,chatlayout;
     Button livestreambutton;
     BottomNavigationView bottomNavigationView;
 
@@ -111,13 +111,34 @@ public class DonorHome extends AppCompatActivity {
         availabletextview = findViewById(R.id.availabletextview);
         streamingtextview = findViewById(R.id.streamingtextview);
         developerlayout = findViewById(R.id.developerlayout);
+        askbutton = findViewById(R.id.ask);
+        inboxbutton = findViewById(R.id.inbox);
         animcloud = findViewById(R.id.location_cloud);
+        chatlayout = findViewById(R.id.chatlayout);
         locationlayout = findViewById(R.id.locationlayout);
         tickimg = findViewById(R.id.tickimg);
         profilelayout = findViewById(R.id.profilelayout);
         crossimg = findViewById(R.id.crossimg);
         bloodImageView = findViewById(R.id.bloodgroupImageview);
         bottomNavigationView = findViewById(R.id.bottomnavigator);
+        tipslayout = findViewById(R.id.tipslayout);
+
+        inboxbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DonorHome.this,ChatActivity.class);
+                intent.putExtra("action","inbox");
+                startActivity(intent);
+            }
+        });
+        askbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DonorHome.this,ChatActivity.class);
+                intent.putExtra("action","ask");
+                startActivity(intent);
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -129,18 +150,40 @@ public class DonorHome extends AppCompatActivity {
                         availablitylayout.setVisibility(View.VISIBLE);
                         locationlayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.GONE);
+                        chatlayout.setVisibility(View.GONE);
+                        tipslayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_location:
                         locationlayout.setVisibility(View.VISIBLE);
                         profilelayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.GONE);
                         availablitylayout.setVisibility(View.GONE);
+                        chatlayout.setVisibility(View.GONE);
+                        tipslayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_developers:
                         locationlayout.setVisibility(View.GONE);
                         profilelayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.VISIBLE);
+                        chatlayout.setVisibility(View.GONE);
+                        tipslayout.setVisibility(View.GONE);
                         availablitylayout.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_tips:
+                        locationlayout.setVisibility(View.GONE);
+                        chatlayout.setVisibility(View.GONE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        tipslayout.setVisibility(View.VISIBLE);
+                        availablitylayout.setVisibility(View.GONE);
+                        break;
+                    case R.id.action_chat:
+                        locationlayout.setVisibility(View.GONE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        tipslayout.setVisibility(View.GONE);
+                        availablitylayout.setVisibility(View.GONE);
+                        chatlayout.setVisibility(View.VISIBLE);
                         break;
                 }
                 return true;
@@ -194,11 +237,11 @@ public class DonorHome extends AppCompatActivity {
 
         isAvailable = sharedPreferences.getBoolean(AVAILABLE,true);
         if (isAvailable){
-            availabletextview.setText("You are available");
+            availabletextview.setText("You Are Available");
             tickimg.setBackground(getDrawable(R.drawable.gradient_selected));
             crossimg.setBackground(null);
         }else {
-            availabletextview.setText("You are not available");
+            availabletextview.setText("You Aren't Available");
             crossimg.setBackground(getDrawable(R.drawable.gradient_selected));
             tickimg.setBackground(null);
         }
@@ -456,13 +499,13 @@ public class DonorHome extends AppCompatActivity {
                     dialog.dismiss();
                 }
                 if (isAvailable){
-                    availabletextview.setText("You are available");
+                    availabletextview.setText("You Are Available");
                     editor.putBoolean(AVAILABLE,true);
                     tickimg.setBackground(getDrawable(R.drawable.gradient_selected));
                     crossimg.setBackground(null);
                     editor.commit();
                 }else {
-                    availabletextview.setText("You are not available");
+                    availabletextview.setText("You Aren't Available");
                     tickimg.setBackground(null);
                     crossimg.setBackground(getDrawable(R.drawable.gradient_selected));
                     editor.putBoolean(AVAILABLE,false);
@@ -504,4 +547,5 @@ public class DonorHome extends AppCompatActivity {
                     return 0;
         }
     }
+
 }

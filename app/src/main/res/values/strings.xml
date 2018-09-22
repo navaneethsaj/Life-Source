@@ -22,4 +22,20 @@
         <item>AB+</item>
         <item>AB-</item>
     </string-array>
+
+    <string name="tips"><b>Before Your Donation</b>\n\n
+        <li>At least 3 hours before donating, eat a balanced meal and avoid fatty foods, such as hamburgers, fries, or ice cream</li>
+        \n\n<li>Get a good night’s sleep</li>
+        \n\n<li>Drink an extra 16 oz. of water and fluids before the donation; you can be deferred for dehydration</li>
+        \n\n<li>Remember that your system must be free of aspirin for three days (72 hours) or ibuprofen for 24 hours prior to donation</li>
+        \n\n\n<b>During Your Donation</b>\n\n
+        <li>Wear clothing with short sleeves or sleeves that can be raised above the elbow</li>
+        \n\n<li>Relax, listen to music, talk to others, or simply just catch up on some reading on our comfortable donor lounge chairs designed specifically for apheresis donations, which are equipped for our donors to surf the internet or watch movies</li>
+        \n\n\n<b>After Your Donation</b>\n\n
+        <li>Drink plenty of fluids over the next 24-48 hours to replenish any fluids you lost during donation</li>
+        \n\n<li>Avoid strenuous physical activity or heavy lifting for about 24 hours after donation</li>
+        \n\n<li>If you feel light headed, lie down, preferably with feet elevated, until the feeling passes</li>
+        \n\n<li>If something doesn’t feel right, call the Donor Center’s toll-free number provided to you after your donation</li>
+        \n\n<li>Enjoy your day and know that you have made a positive difference!</li>\n\n\n\n
+    </string>
 </resources>

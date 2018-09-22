@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translate
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:toYDelta="-100%p"
-    android:fromYDelta="100%p"
-    android:duration="600"
-    android:repeatCount="infinite"/>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1000"
+    android:fromDegrees="0"
+    android:interpolator="@android:anim/linear_interpolator"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:repeatCount="infinite"
+    android:toDegrees="358" />

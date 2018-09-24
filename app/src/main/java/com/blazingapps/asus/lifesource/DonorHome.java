@@ -71,13 +71,14 @@ public class DonorHome extends AppCompatActivity {
     TextView pname,paddress,platitude,plongitude,pcontact,pgroup,availabletextview,streamingtextview;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    ImageView bloodImageView,askbutton,inboxbutton;
+    ImageView bloodImageView;//askbutton,inboxbutton;
     Button updatelocationButton;
     private FusedLocationProviderClient mFusedLocationClient;
     Location currentlocation;
     String addressglobal;
     LinearLayout availablitylayout, profilelayout,locationlayout;
-    RelativeLayout developerlayout,tipslayout,chatlayout;
+    RelativeLayout developerlayout,tipslayout;
+    LinearLayout chatlayout;
     Button livestreambutton;
     BottomNavigationView bottomNavigationView;
 
@@ -111,8 +112,6 @@ public class DonorHome extends AppCompatActivity {
         availabletextview = findViewById(R.id.availabletextview);
         streamingtextview = findViewById(R.id.streamingtextview);
         developerlayout = findViewById(R.id.developerlayout);
-        askbutton = findViewById(R.id.ask);
-        inboxbutton = findViewById(R.id.inbox);
         animcloud = findViewById(R.id.location_cloud);
         chatlayout = findViewById(R.id.chatlayout);
         locationlayout = findViewById(R.id.locationlayout);
@@ -123,22 +122,6 @@ public class DonorHome extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomnavigator);
         tipslayout = findViewById(R.id.tipslayout);
 
-        inboxbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DonorHome.this,ChatActivity.class);
-                intent.putExtra("action","inbox");
-                startActivity(intent);
-            }
-        });
-        askbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DonorHome.this,ChatActivity.class);
-                intent.putExtra("action","ask");
-                startActivity(intent);
-            }
-        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

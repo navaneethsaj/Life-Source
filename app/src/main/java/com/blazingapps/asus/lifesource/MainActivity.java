@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PUSH_KEY = "pushkey";
 
 
+    String URL = "https://us-central1-life-source-277b9.cloudfunctions.net/getdonor?";
 
     TextView nameProf,addressProf,mobileProf,telprof,faxProf,emailProf,latProf,longProf,tokenProf;
     LinearLayout searchresulttextview, profilelayout,finddonorlayout;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     RelativeLayout developerlayout;
     AlertDialog searchingdialog;
+    TextView titlesearch;
     AlertDialog.Builder searchingbuilder;
     BottomNavigationView bottomNavigationView;
 
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         searchresulttextview = findViewById(R.id.resultlayout);
         searchresulttextview.setVisibility(View.GONE);
+        titlesearch = findViewById(R.id.titlesearch);
         profilelayout = findViewById(R.id.profilelayout);
         bottomNavigationView = findViewById(R.id.bottomnavigator);
         developerlayout = findViewById(R.id.developerlayout);
@@ -131,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonfinddonor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String URL = "https://us-central1-life-source-277b9.cloudfunctions.net/getdonor?";
+            public void onClick(View view) {;
                 String group = spinner.getSelectedItem().toString();
                 if (group.equals("Select Blood Group")){
                     Toast.makeText(getApplicationContext(),"Select Blood Group",Toast.LENGTH_SHORT).show();
@@ -162,10 +164,20 @@ public class MainActivity extends AppCompatActivity {
                         developerlayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_search:
+                        URL = "https://us-central1-life-source-277b9.cloudfunctions.net/getdonor?";
                         searchresulttextview.setVisibility(View.VISIBLE);
                         finddonorlayout.setVisibility(View.VISIBLE);
                         profilelayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.GONE);
+                        titlesearch.setText("Normal Search");
+                        break;
+                    case R.id.brutesearch:
+                        URL = "https://us-central1-life-source-277b9.cloudfunctions.net/getbrutedonor?";
+                        searchresulttextview.setVisibility(View.VISIBLE);
+                        finddonorlayout.setVisibility(View.VISIBLE);
+                        profilelayout.setVisibility(View.GONE);
+                        developerlayout.setVisibility(View.GONE);
+                        titlesearch.setText("Emergency Search");
                         break;
                     case R.id.action_developers:
                         searchresulttextview.setVisibility(View.GONE);

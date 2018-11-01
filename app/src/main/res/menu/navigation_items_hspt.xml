@@ -6,6 +6,10 @@
     <item android:id="@+id/action_search"
         android:title="Search"
         android:icon="@drawable/nav_search" />
+    <item
+        android:id="@+id/brutesearch"
+        android:title="Brute Search"
+        android:icon="@drawable/emergency_search"/>
     <item android:id="@+id/action_developers"
         android:title="Developers"
         android:icon="@drawable/nav_dev" />

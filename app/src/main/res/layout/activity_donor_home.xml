@@ -396,8 +396,14 @@
                                 android:src="@drawable/unavailable"/>
                         </LinearLayout>
                     </LinearLayout>
+                    <View
+                        android:layout_marginBottom="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/linecolor"/>
                     <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
                     android:id="@+id/group_weekdays"
+                        android:layout_marginHorizontal="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tbgChildSpacing="auto">
@@ -449,7 +455,14 @@
                             android:text="Sat"/>
 
                     </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/linecolor"/>
                     <RelativeLayout
+                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
@@ -490,7 +503,7 @@
                         app:maxValue="59"
                         app:minValue="00"
                         android:layout_toRightOf="@+id/fromhour"
-                        app:value="00" />
+                        app:value="30" />
                     <one.xcorp.widget.swipepicker.SwipePicker
                         android:id="@+id/tohour"
                         android:layout_width="wrap_content"
@@ -513,7 +526,7 @@
                         app:minValue="00"
                         app:step="5"
                         android:layout_alignParentEnd="true"
-                        app:value="00" />
+                        app:value="30" />
                 </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>

@@ -283,6 +283,7 @@ public class DonorHome extends AppCompatActivity {
         fromhour.setMaxValue(sharedPreferences.getInt(TO_HOUR,20)-1);
         frommin.setValue(sharedPreferences.getInt(FROM_MIN,00));
         tohour.setValue(sharedPreferences.getInt(TO_HOUR,20));
+        tohour.setMinValue(sharedPreferences.getInt(FROM_HOUR,8)+1);
         tomin.setValue(sharedPreferences.getInt(TO_MIN,00));
 
 
@@ -298,6 +299,7 @@ public class DonorHome extends AppCompatActivity {
 
                         editor.putInt(FROM_HOUR, (int) z1);
                         editor.commit();
+                        tohour.setMinValue(sharedPreferences.getInt(FROM_HOUR,8)+1);
                     }
                 });
             }

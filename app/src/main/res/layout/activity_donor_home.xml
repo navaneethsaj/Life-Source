@@ -355,6 +355,7 @@
                         android:textStyle="bold"
                         android:background="@drawable/availablity"/>
                     <LinearLayout
+                        android:id="@+id/availableswitches"
                         android:padding="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -395,6 +396,129 @@
                                 android:src="@drawable/unavailable"/>
                         </LinearLayout>
                     </LinearLayout>
+                    <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
+                    android:id="@+id/group_weekdays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tbgChildSpacing="auto">
+
+                    <com.nex3z.togglebuttongroup.button.CircularToggle
+                        android:id="@+id/sun"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sun"/>
+
+                    <com.nex3z.togglebuttongroup.button.CircularToggle
+                        android:id="@+id/mon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mon"/>
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
+                            android:id="@+id/tue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tue"/>
+
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
+                            android:id="@+id/wed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wed"/>
+
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
+                            android:id="@+id/thu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thu"/>
+
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
+                            android:id="@+id/fri"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fri"/>
+
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
+                            android:id="@+id/sat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sat"/>
+
+                    </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_marginLeft="4dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="From"/>
+                        <TextView
+                            android:layout_marginRight="4dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="To"/>
+                    </RelativeLayout>
+                <RelativeLayout
+                    android:paddingBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <one.xcorp.widget.swipepicker.SwipePicker
+                        android:id="@+id/fromhour"
+                        android:layout_margin="4dp"
+                        android:state_activated="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Hour"
+                        app:maxValue="23"
+                        app:looped="true"
+                        app:minValue="00"
+                        app:value="8" />
+                    <one.xcorp.widget.swipepicker.SwipePicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:looped="true"
+                        android:layout_margin="4dp"
+                        android:hint="Min"
+                        app:step="5"
+                        android:state_activated="true"
+                        android:id="@+id/frommin"
+                        app:maxValue="59"
+                        app:minValue="00"
+                        android:layout_toRightOf="@+id/fromhour"
+                        app:value="00" />
+                    <one.xcorp.widget.swipepicker.SwipePicker
+                        android:id="@+id/tohour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Hour"
+                        android:state_activated="true"
+                        android:layout_margin="4dp"
+                        android:layout_toLeftOf="@+id/tomin"
+                        app:looped="true"
+                        app:maxValue="23"
+                        app:minValue="00"
+                        app:value="20" />
+                    <one.xcorp.widget.swipepicker.SwipePicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Min"
+                        android:state_activated="true"
+                        android:id="@+id/tomin"
+                        android:layout_margin="4dp"
+                        app:maxValue="59"
+                        app:minValue="00"
+                        app:looped="true"
+                        app:step="5"
+                        android:layout_alignParentEnd="true"
+                        app:value="00" />
+                </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

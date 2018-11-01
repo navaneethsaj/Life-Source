@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,15 +35,24 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nex3z.togglebuttongroup.MultiSelectToggleGroup;
+import com.nex3z.togglebuttongroup.button.CircularToggle;
+import com.nex3z.togglebuttongroup.button.OnCheckedChangeListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import one.xcorp.widget.swipepicker.SwipePicker;
 
 public class DonorHome extends AppCompatActivity {
     private static final String DONOR_REF = "blooddonors";
@@ -60,6 +70,17 @@ public class DonorHome extends AppCompatActivity {
     private static final String AVAILABLE = "availablity";
     private static final int REQCODE = 1;
 
+    private static final String MON = "monday";
+    private static final String TUE = "tues";
+    private static final String WED = "wed";
+    private static final String THU = "thu";
+    private static final String FRI = "fri";
+    private static final String SAT = "sat";
+    private static final String SUN = "sun";
+    private static final String FROM_HOUR = "fromhour";
+    private static final String TO_HOUR = "tohour";
+    private static final String FROM_MIN = "frommin";
+    private static final String TO_MIN = "tomin";
 
     Boolean liveStream = false;
     Boolean isAvailable = true;
@@ -68,6 +89,10 @@ public class DonorHome extends AppCompatActivity {
     AlertDialog dialog;
     AlertDialog.Builder builder;
 
+    Button timepicker;
+    SwipePicker fromhour,tohour,frommin,tomin;
+    MultiSelectToggleGroup groupweekdays;
+    CircularToggle sun,mon,tue,wed,thu,fri,sat;
     TextView pname,paddress,platitude,plongitude,pcontact,pgroup,availabletextview,streamingtextview;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -79,6 +104,7 @@ public class DonorHome extends AppCompatActivity {
     LinearLayout availablitylayout, profilelayout,locationlayout;
     RelativeLayout developerlayout,tipslayout;
     LinearLayout chatlayout;
+    LinearLayout availablitybuttonslayout;
     Button livestreambutton;
     BottomNavigationView bottomNavigationView;
 
@@ -100,6 +126,20 @@ public class DonorHome extends AppCompatActivity {
         builder.setTitle("Updating").setMessage("Please wait...").setCancelable(false);
         dialog = builder.create();
 
+        groupweekdays = findViewById(R.id.group_weekdays);
+        sun = findViewById(R.id.sun);
+        mon = findViewById(R.id.mon);
+        tue = findViewById(R.id.tue);
+        wed = findViewById(R.id.wed);
+        thu = findViewById(R.id.thu);
+        fri = findViewById(R.id.fri);
+        sat = findViewById(R.id.sat);
+
+        fromhour = findViewById(R.id.fromhour);
+        frommin = findViewById(R.id.frommin);
+        tohour = findViewById(R.id.tohour);
+        tomin = findViewById(R.id.tomin);
+
         pname = findViewById(R.id.bprofilename);
         paddress = findViewById(R.id.bprofileaddress);
         platitude = findViewById(R.id.blatitude);
@@ -116,12 +156,201 @@ public class DonorHome extends AppCompatActivity {
         chatlayout = findViewById(R.id.chatlayout);
         locationlayout = findViewById(R.id.locationlayout);
         tickimg = findViewById(R.id.tickimg);
+        availablitybuttonslayout = findViewById(R.id.availableswitches);
         profilelayout = findViewById(R.id.profilelayout);
         crossimg = findViewById(R.id.crossimg);
         bloodImageView = findViewById(R.id.bloodgroupImageview);
         bottomNavigationView = findViewById(R.id.bottomnavigator);
         tipslayout = findViewById(R.id.tipslayout);
 
+        sun.setChecked(sharedPreferences.getBoolean(SUN,true));
+        mon.setChecked(sharedPreferences.getBoolean(MON,true));
+        tue.setChecked(sharedPreferences.getBoolean(TUE,true));
+        wed.setChecked(sharedPreferences.getBoolean(WED,true));
+        thu.setChecked(sharedPreferences.getBoolean(THU,true));
+        fri.setChecked(sharedPreferences.getBoolean(FRI,true));
+        sat.setChecked(sharedPreferences.getBoolean(SAT,true));
+
+        sun.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("sun");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        editor.putBoolean(SUN,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        mon.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("mon");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        editor.putBoolean(MON,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        tue.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("tue");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        editor.putBoolean(TUE,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        wed.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("wed");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        editor.putBoolean(WED,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        thu.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("thu");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        editor.putBoolean(THU,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        fri.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("fri");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        editor.putBoolean(FRI,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        sat.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public <T extends View & Checkable> void onCheckedChanged(T view, final boolean isChecked) {
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("sat");
+                myRef.setValue(isChecked).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        editor.putBoolean(SAT,isChecked);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+
+        fromhour.setValue(sharedPreferences.getInt(FROM_HOUR,8));
+        fromhour.setMaxValue(sharedPreferences.getInt(TO_HOUR,20)-1);
+        frommin.setValue(sharedPreferences.getInt(FROM_MIN,00));
+        tohour.setValue(sharedPreferences.getInt(TO_HOUR,20));
+        tomin.setValue(sharedPreferences.getInt(TO_MIN,00));
+
+
+        fromhour.setOnValueChangeListener(new SwipePicker.OnValueChangeListener() {
+            @Override
+            public void onValueChanged(@NotNull SwipePicker swipePicker, float v, float v1) {
+                final float z1 = v1;
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("fromhour");
+                myRef.setValue((int)v1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        editor.putInt(FROM_HOUR, (int) z1);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        frommin.setOnValueChangeListener(new SwipePicker.OnValueChangeListener() {
+            @Override
+            public void onValueChanged(@NotNull SwipePicker swipePicker, float v, float v1) {
+                final float z1 = v1;
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("frommin");
+                myRef.setValue((int)v1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        editor.putInt(FROM_MIN, (int) z1);
+                        editor.commit();
+                    }
+                });
+            }
+        });
+        tohour.setOnValueChangeListener(new SwipePicker.OnValueChangeListener() {
+            @Override
+            public void onValueChanged(@NotNull SwipePicker swipePicker, float v, float v1) {
+                final float z1 = v1;
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("tohour");
+                myRef.setValue((int)v1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        editor.putInt(TO_HOUR, (int) z1);
+                        editor.commit();
+                        fromhour.setMaxValue(sharedPreferences.getInt(TO_HOUR,20)-1);
+                    }
+                });
+            }
+        });
+        tomin.setOnValueChangeListener(new SwipePicker.OnValueChangeListener() {
+            @Override
+            public void onValueChanged(@NotNull SwipePicker swipePicker, float v, float v1) {
+                final float z1 = v1;
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("tomin");
+                myRef.setValue((int)v1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        editor.putInt(TO_MIN, (int) z1);
+                        editor.commit();
+                    }
+                });
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -252,7 +481,7 @@ public class DonorHome extends AppCompatActivity {
                 }
             }
         });
-        availablitylayout.setOnClickListener(new View.OnClickListener() {
+        availablitybuttonslayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 updateAvailablity();

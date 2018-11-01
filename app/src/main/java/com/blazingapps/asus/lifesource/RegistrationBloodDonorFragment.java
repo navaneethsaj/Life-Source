@@ -75,6 +75,17 @@ public class RegistrationBloodDonorFragment extends Fragment {
     private static final String DONOR_CONTACT = "donorcontact";
     private static final String DONOR_GROUP ="donorgroup";
     private static final String MYPREF = "mypreferences";
+    private static final String MON = "monday";
+    private static final String TUE = "tues";
+    private static final String WED = "wed";
+    private static final String THU = "thu";
+    private static final String FRI = "fri";
+    private static final String SAT = "sat";
+    private static final String SUN = "sun";
+    private static final String FROM_HOUR = "fromhour";
+    private static final String TO_HOUR = "tohour";
+    private static final String FROM_MIN = "frommin";
+    private static final String TO_MIN = "tomin";
     private static final String REGISTERED = "registered";
     private static final String ADMIN = "admin";
     private static final String PUSH_KEY = "pushkey";
@@ -293,6 +304,17 @@ public class RegistrationBloodDonorFragment extends Fragment {
                                             editor.putFloat(DONOR_LONGITUDE,longitude);
                                             editor.putBoolean(REGISTERED,true);
                                             editor.putString(ADMIN,"donor");
+                                            editor.putBoolean(MON,true);
+                                            editor.putBoolean(TUE,true);
+                                            editor.putBoolean(WED,true);
+                                            editor.putBoolean(THU,true);
+                                            editor.putBoolean(FRI,true);
+                                            editor.putBoolean(SAT,true);
+                                            editor.putBoolean(SUN,true);
+                                            editor.putInt(FROM_HOUR,8);
+                                            editor.putInt(TO_HOUR,20);
+                                            editor.putInt(FROM_MIN,00);
+                                            editor.putInt(TO_MIN,00);
                                             editor.commit();
 
                                             Toast.makeText(getActivity(),"Registration Successful",Toast.LENGTH_SHORT).show();

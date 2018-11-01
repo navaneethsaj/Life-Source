@@ -82,7 +82,6 @@ public class InboxFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("TAG",s);
             if (s!=null){
                 Log.d("Response is ",s);
                 //Toast.makeText(getActivity(),s,Toast.LENGTH_SHORT).show();
@@ -103,6 +102,8 @@ public class InboxFragment extends Fragment {
                             }
 
                             chatObjectArrayList.add(new ChatObject(question,answers));
+                            ChatAdapter chatAdapter = new ChatAdapter(getActivity(),R.layout.chatitem,chatObjectArrayList);
+                            listView.setAdapter(chatAdapter);
                         }
                     }else {
                         Toast.makeText(getActivity(),"404",Toast.LENGTH_SHORT).show();
@@ -110,8 +111,6 @@ public class InboxFragment extends Fragment {
 
                     //Toast.makeText(getActivity(),chatObjectArrayList.get(0).getQuestion()+" - "+chatObjectArrayList.get(0).getAnswers().get(0).getAnswer(),Toast.LENGTH_SHORT).show();
                     //Log.d("dummy",chatObjectArrayList.get(7).getQuestion()+" - "+chatObjectArrayList.get(7).getAnswers().get(0).getAnswer());
-                    ChatAdapter chatAdapter = new ChatAdapter(getActivity(),R.layout.chatitem,chatObjectArrayList);
-                    listView.setAdapter(chatAdapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

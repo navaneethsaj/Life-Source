@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ask"/>
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/textcolor"
+        android:textStyle="bold"
+        android:text="Ask Questions"
+        android:id="@+id/titletext"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/titletext"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/inputtext"
+            android:background="@color/white"
+            android:hint="Ask"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_margin="20dp"
+            android:id="@+id/sendbutton"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send"/>
+    </LinearLayout>
 
 </RelativeLayout>

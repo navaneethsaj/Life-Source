@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     TextView titlesearch;
     AlertDialog.Builder searchingbuilder;
     BottomNavigationView bottomNavigationView;
+    FloatingActionButton sirenfab;
 
 
     @Override
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         telprof = findViewById(R.id.proftel);
         faxProf = findViewById(R.id.proffax);
         emailProf = findViewById(R.id.profemail);
+        sirenfab = findViewById(R.id.sirensearch);
 
         profilelayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +154,17 @@ public class MainActivity extends AppCompatActivity {
 
                 DonorAsyncTask asyncTask = new DonorAsyncTask();
                 asyncTask.execute(url);
+            }
+        });
+        sirenfab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uid = sharedPreferences.getString(HOSPITAL_ID,"unregistered");
+                String latitude = String.valueOf(sharedPreferences.getFloat(LATITUDE,0));
+                String longitude = String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
+                String url = "https://us-central1-life-source-277b9.cloudfunctions.net/sirensearch?" + "uid=" + uid + "&lat=" + latitude + "&long=" + longitude;
+
+                new SirenAsyncTask().execute(url);
             }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -293,5 +308,79 @@ public class MainActivity extends AppCompatActivity {
         }).setNegativeButton("Cancel",null);
         android.app.AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    class SirenAsyncTask extends AsyncTask<String ,Void ,String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(strings[0])
+                    .build();
+
+            Response response = null;
+            try {
+                response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            sirenfab.setEnabled(false);
+            if (!searchingdialog.isShowing()){
+                searchingdialog.show();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+            sirenfab.setEnabled(true);
+            if (searchingdialog.isShowing()){
+                searchingdialog.dismiss();
+            }
+            if (s==null){
+                Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject responseObject = new JSONObject(s);
+                Log.d("status", String.valueOf(responseObject.getInt("status")));
+                if (responseObject.getInt("status") == 200){
+                    JSONArray donorArray = responseObject.getJSONArray("donors");
+                    if(donorArray.length()==0){
+                        Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
+                    }
+                    ArrayList<RespDonorObj> donorObjs = new ArrayList<>();
+
+                    for (int i =0 ; i < donorArray.length() ; ++i){
+                        String name = donorArray.getJSONObject(i).getString("name");
+                        String mobile = donorArray.getJSONObject(i).getString("mobile");
+                        String distance = donorArray.getJSONObject(i).getString("distance");
+                        String bgroup = donorArray.getJSONObject(i).getString("bgroup");
+
+                        String smstext = "Dear "+name+"\nYou are requested to donate blood at "+
+                                sharedPreferences.getString(NAME,"")+",\n"+
+                                sharedPreferences.getString(ADDRESS,"")+"\n"+
+                                "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"");
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(mobile, null, smstext, null, null);
+                    }
+                    Toast.makeText(getApplicationContext(),"Request sent for "+donorArray.length(),Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Log.d("exception","jsonexception occoured");
+                e.printStackTrace();
+            }
+            super.onPostExecute(s);
+        }
     }
 }

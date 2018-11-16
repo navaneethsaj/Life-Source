@@ -5,13 +5,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +52,9 @@ public class InboxFragment extends Fragment {
     private static final String AVAILABLE = "availablity";
 
     ListView listView;
+    ProgressBar progressBar;
     ArrayList<ChatObject> chatObjectArrayList ;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -50,12 +62,27 @@ public class InboxFragment extends Fragment {
         url = "https://us-central1-life-source-277b9.cloudfunctions.net/inbox?uid="+sharedPreferences.getString(PUSH_KEY,"");
         chatObjectArrayList = new ArrayList<>();
         return inflater.inflate(R.layout.fragment_inbox, container, false);
+
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = view.findViewById(R.id.listview);
+        progressBar = view.findViewById(R.id.progress);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("chat").child(sharedPreferences.getString(PUSH_KEY,""));
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                refresh();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         new InboxAysncTask().execute(url);
     }
 
@@ -82,8 +109,10 @@ public class InboxFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             if (s!=null){
                 Log.d("Response is ",s);
+                chatObjectArrayList = new ArrayList<>();
                 //Toast.makeText(getActivity(),s,Toast.LENGTH_SHORT).show();
                 try {
                     JSONObject resp = new JSONObject(s);
@@ -102,9 +131,10 @@ public class InboxFragment extends Fragment {
                             }
 
                             chatObjectArrayList.add(new ChatObject(question,answers));
-                            ChatAdapter chatAdapter = new ChatAdapter(getActivity(),R.layout.chatitem,chatObjectArrayList);
-                            listView.setAdapter(chatAdapter);
                         }
+                        ChatAdapter chatAdapter = new ChatAdapter(getActivity(),R.layout.chatitem,chatObjectArrayList);
+                        listView.setAdapter(chatAdapter);
+                        listView.setSelection(listView.getCount()-1);
                     }else {
                         Toast.makeText(getActivity(),"404",Toast.LENGTH_SHORT).show();
                     }
@@ -127,6 +157,11 @@ public class InboxFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void refresh(){
+        new InboxAysncTask().execute(url);
     }
 }

@@ -353,26 +353,49 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject responseObject = new JSONObject(s);
                 Log.d("status", String.valueOf(responseObject.getInt("status")));
                 if (responseObject.getInt("status") == 200){
-                    JSONArray donorArray = responseObject.getJSONArray("donors");
+                    final JSONArray donorArray = responseObject.getJSONArray("donors");
                     if(donorArray.length()==0){
                         Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                    ArrayList<RespDonorObj> donorObjs = new ArrayList<>();
+                    AlertDialog confirm;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Blood donation request will be sent to \n"+String.valueOf(donorArray.length())+" users\n(Operator charges may apply)");
+                    builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int k) {
+                            for (int i =0 ; i < donorArray.length() ; ++i){
+                                try {
 
-                    for (int i =0 ; i < donorArray.length() ; ++i){
-                        String name = donorArray.getJSONObject(i).getString("name");
-                        String mobile = donorArray.getJSONObject(i).getString("mobile");
-                        String distance = donorArray.getJSONObject(i).getString("distance");
-                        String bgroup = donorArray.getJSONObject(i).getString("bgroup");
+                                    String name = donorArray.getJSONObject(i).getString("name");
+                                    String mobile = donorArray.getJSONObject(i).getString("mobile");
+                                    String distance = donorArray.getJSONObject(i).getString("distance");
+                                    String bgroup = donorArray.getJSONObject(i).getString("bgroup");
 
-                        String smstext = "Dear "+name+"\nYou are requested to donate blood at "+
-                                sharedPreferences.getString(NAME,"")+",\n"+
-                                sharedPreferences.getString(ADDRESS,"")+"\n"+
-                                "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"");
-                        SmsManager smsManager = SmsManager.getDefault();
-                        smsManager.sendTextMessage(mobile, null, smstext, null, null);
+                                    String smstext = "Dear "+name+"\nYou are requested to donate blood at "+
+                                            sharedPreferences.getString(NAME,"")+",\n"+
+                                            sharedPreferences.getString(ADDRESS,"")+"\n"+
+                                            "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"");
+                                    SmsManager smsManager = SmsManager.getDefault();
+                                    smsManager.sendTextMessage(mobile, null, smstext, null, null);
+
+                                }catch (Exception e){
+                                    Toast.makeText(getApplicationContext(),"Error Occoured",Toast.LENGTH_LONG).show();
+                                    Log.d("TAG",e.getMessage());
+                                }
+                            }
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    confirm=builder.create();
+                    if (!confirm.isShowing()){
+                        confirm.show();
                     }
-                    Toast.makeText(getApplicationContext(),"Request sent for "+donorArray.length(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"Request sent for "+donorArray.length(),Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
                 }

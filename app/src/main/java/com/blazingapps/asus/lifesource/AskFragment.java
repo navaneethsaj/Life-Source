@@ -1,6 +1,7 @@
 package com.blazingapps.asus.lifesource;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -103,6 +104,9 @@ public class AskFragment extends Fragment {
                     if (jsonObject.getInt("status") == 200){
                         Toast.makeText(getActivity(),"Question Sent",Toast.LENGTH_SHORT).show();
                         inputtext.setHint("Ask");
+                        /*FragmentManager fm = getFragmentManager();
+                        InboxFragment fragm = (InboxFragment) fm.findFragmentById(R.id.inboxfragment);
+                        fragm.refresh();*/
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

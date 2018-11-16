@@ -99,6 +99,7 @@ public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
                         "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"");
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(mobile, null, smstext, null, null);
+                Toast.makeText(getContext(),"Request Sent",Toast.LENGTH_LONG).show();
             }
         });
 

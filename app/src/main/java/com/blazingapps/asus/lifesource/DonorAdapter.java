@@ -1,5 +1,6 @@
 package com.blazingapps.asus.lifesource;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -96,9 +97,16 @@ public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
                 String smstext = "Dear "+name+"\nYou are requested to donate blood at "+
                         sharedPreferences.getString(NAME,"")+",\n"+
                         sharedPreferences.getString(ADDRESS,"")+"\n"+
-                        "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"");
+                        "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"")
+                        //+"\nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+                        //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
+                        ;
+                String locateustxt="locate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+                +","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
+                //Log.d("TAG",smstext);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(mobile, null, smstext, null, null);
+                smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
                 Toast.makeText(getContext(),"Request Sent",Toast.LENGTH_LONG).show();
             }
         });

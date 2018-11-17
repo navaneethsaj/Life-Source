@@ -364,6 +364,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int k) {
+                            int sentno=0;
                             for (int i =0 ; i < donorArray.length() ; ++i){
                                 try {
 
@@ -375,15 +376,23 @@ public class MainActivity extends AppCompatActivity {
                                     String smstext = "Dear "+name+"\nYou are requested to donate blood at "+
                                             sharedPreferences.getString(NAME,"")+",\n"+
                                             sharedPreferences.getString(ADDRESS,"")+"\n"+
-                                            "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"");
+                                            "contact no : "+sharedPreferences.getString(PHONE,"")+" , "+sharedPreferences.getString(MOBILE,"")
+                                            //+"/nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+                                            //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
+                                    ;
+                                    String locateustxt="locate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+                                            +","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
                                     SmsManager smsManager = SmsManager.getDefault();
                                     smsManager.sendTextMessage(mobile, null, smstext, null, null);
+                                    smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
+                                    sentno++;
 
                                 }catch (Exception e){
-                                    Toast.makeText(getApplicationContext(),"Error Occoured",Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getApplicationContext(),"Error Occoured",Toast.LENGTH_LONG).show();
                                     Log.d("TAG",e.getMessage());
                                 }
                             }
+                            Toast.makeText(getApplicationContext(),"Message sent to "+String.valueOf(sentno)+" nearby donors",Toast.LENGTH_LONG).show();
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override

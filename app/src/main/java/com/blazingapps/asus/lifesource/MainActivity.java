@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog.Builder searchingbuilder;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton sirenfab;
-
+    RelativeLayout rootlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
+        rootlayout=findViewById(R.id.rootlayout);
         nameProf = findViewById(R.id.profname);
         addressProf = findViewById(R.id.profaddress);
         mobileProf = findViewById(R.id.profmobile);
@@ -141,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {;
                 String group = spinner.getSelectedItem().toString();
                 if (group.equals("Select Blood Group")){
-                    Toast.makeText(getApplicationContext(),"Select Blood Group",Toast.LENGTH_SHORT).show();
+                    Snackbar.make(rootlayout,"Select Blood Group",Snackbar.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Select Blood Group",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 group = group.replace("+","%2B");
@@ -242,7 +245,8 @@ public class MainActivity extends AppCompatActivity {
                 searchingdialog.dismiss();
             }
             if (s==null){
-                Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
+                Snackbar.make(rootlayout,"Network Slow",Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
@@ -251,7 +255,8 @@ public class MainActivity extends AppCompatActivity {
                 if (responseObject.getInt("status") == 200){
                     JSONArray donorArray = responseObject.getJSONArray("donors");
                     if(donorArray.length()==0){
-                        Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(rootlayout,"No Donor Available",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
                     }
                     ArrayList<RespDonorObj> donorObjs = new ArrayList<>();
 
@@ -268,7 +273,8 @@ public class MainActivity extends AppCompatActivity {
                     listView.setAdapter(donorAdapter);
                     searchresulttextview.setVisibility(View.VISIBLE);
                 }else {
-                    Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
+                    Snackbar.make(rootlayout,"404 Error",Snackbar.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Log.d("exception","jsonexception occoured");
@@ -293,7 +299,8 @@ public class MainActivity extends AppCompatActivity {
                 myRef.child(sharedPreferences.getString(PUSH_KEY,"")).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(rootlayout,"Updated",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
                         editor.putString(MOBILE,phoneno);
                         editor.commit();
                         mobileProf.setText(phoneno);
@@ -301,7 +308,8 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(rootlayout,"Failed",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -346,7 +354,8 @@ public class MainActivity extends AppCompatActivity {
                 searchingdialog.dismiss();
             }
             if (s==null){
-                Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
+                Snackbar.make(rootlayout,"Network Slow",Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
@@ -355,7 +364,8 @@ public class MainActivity extends AppCompatActivity {
                 if (responseObject.getInt("status") == 200){
                     final JSONArray donorArray = responseObject.getJSONArray("donors");
                     if(donorArray.length()==0){
-                        Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(rootlayout,"No Donor Available",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
                         return;
                     }
                     AlertDialog confirm;
@@ -392,7 +402,8 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("TAG",e.getMessage());
                                 }
                             }
-                            Toast.makeText(getApplicationContext(),"Message sent to "+String.valueOf(sentno)+" nearby donors",Toast.LENGTH_LONG).show();
+                            Snackbar.make(rootlayout,"Message sent to "+String.valueOf(sentno)+" nearby donors",Snackbar.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"Message sent to "+String.valueOf(sentno)+" nearby donors",Toast.LENGTH_LONG).show();
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -406,7 +417,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //Toast.makeText(getApplicationContext(),"Request sent for "+donorArray.length(),Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
+                    Snackbar.make(rootlayout,"404 Error",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Log.d("exception","jsonexception occoured");

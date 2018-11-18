@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -107,6 +108,7 @@ public class DonorHome extends AppCompatActivity {
     LinearLayout availablitybuttonslayout;
     Button livestreambutton;
     BottomNavigationView bottomNavigationView;
+    RelativeLayout rootlayout;
 
     ImageView animcloud, tickimg,crossimg;
 
@@ -126,6 +128,7 @@ public class DonorHome extends AppCompatActivity {
         builder.setTitle("Updating").setMessage("Please wait...").setCancelable(false);
         dialog = builder.create();
 
+        rootlayout=findViewById(R.id.rootlayoutdonor);
         groupweekdays = findViewById(R.id.group_weekdays);
         sun = findViewById(R.id.sun);
         mon = findViewById(R.id.mon);
@@ -426,7 +429,8 @@ public class DonorHome extends AppCompatActivity {
         requestLocationUpdate();
 
         if (mAuth == null){
-            Toast.makeText(this,"User not authenticated",Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootlayout,"User not authenticated",Snackbar.LENGTH_SHORT).show();
+//            Toast.makeText(this,"User not authenticated",Toast.LENGTH_SHORT).show();
         }else {
             //Toast.makeText(this,"User Authenticated",Toast.LENGTH_SHORT).show();
         }
@@ -515,7 +519,8 @@ public class DonorHome extends AppCompatActivity {
                 myRef.child(sharedPreferences.getString(PUSH_KEY,"")).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(rootlayout,"Updated",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
                         editor.putString(DONOR_CONTACT,phoneno);
                         editor.commit();
                         pcontact.setText(phoneno);
@@ -523,7 +528,8 @@ public class DonorHome extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(rootlayout,"Failed",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -634,7 +640,8 @@ public class DonorHome extends AppCompatActivity {
 
                             }else {
                                 Log.d("locationz","No location");
-                                Toast.makeText(getApplicationContext(),"Turn On GPS",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),"Turn On GPS",Toast.LENGTH_SHORT).show();
+                                Snackbar.make(rootlayout,"Turn On GPS",Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -667,7 +674,8 @@ public class DonorHome extends AppCompatActivity {
                 if (grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                     requestLocationUpdate();
                 }else {
-                    Toast.makeText(this,"Insufficent Permission",Toast.LENGTH_LONG).show();
+                    Snackbar.make(rootlayout,"Insufficient Permission",Snackbar.LENGTH_SHORT).show();
+                    //Toast.makeText(this,"Insufficent Permission",Toast.LENGTH_LONG).show();
                 }
         }
     }
@@ -692,7 +700,8 @@ public class DonorHome extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                Snackbar.make(rootlayout,"Failed",Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
                 updatelocationButton.setEnabled(true);
                 updatelocationButton.clearAnimation();
             }
@@ -729,7 +738,8 @@ public class DonorHome extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                Snackbar.make(rootlayout,"Failed",Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
                 isAvailable = !isAvailable;
                 if(dialog.isShowing()){
                     dialog.dismiss();

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +43,13 @@ public class AskFragment extends Fragment {
     private static final String AVAILABLE = "availablity";
     String URL;
     SharedPreferences sharedPreferences;
+    View view;
+    private Context mcontext;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
+        mcontext=getActivity();
         URL = "https://us-central1-life-source-277b9.cloudfunctions.net/ask?id=" + sharedPreferences.getString(PUSH_KEY,"");
         return inflater.inflate(R.layout.fragment_ask, container, false);
     }
@@ -54,9 +59,14 @@ public class AskFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sendbutton = view.findViewById(R.id.sendbutton);
         inputtext = view.findViewById(R.id.inputtext);
+        this.view=view;
         sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (inputtext.getText().toString().length()<2){
+                    Snackbar.make(view,"Enter Valid Question",Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
                 String url = URL + "&question=" + inputtext.getText().toString();
                 inputtext.setText("");
                 inputtext.setHint("Sending");
@@ -98,11 +108,11 @@ public class AskFragment extends Fragment {
                     jsonObject = new JSONObject(s);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getActivity(),"Try Later",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mcontext,"Try Later",Toast.LENGTH_SHORT).show();
                 }
                 try {
                     if (jsonObject.getInt("status") == 200){
-                        Toast.makeText(getActivity(),"Question Sent",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view,"Question Sent",Snackbar.LENGTH_SHORT).show();
                         inputtext.setHint("Ask");
                         /*FragmentManager fm = getFragmentManager();
                         InboxFragment fragm = (InboxFragment) fm.findFragmentById(R.id.inboxfragment);
@@ -110,12 +120,12 @@ public class AskFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getActivity(),"Try Later",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mcontext,"Try Later",Toast.LENGTH_SHORT).show();
                 }
             }
             else
             {
-                Toast.makeText(getActivity(),"Try Later",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mcontext,"Try Later",Toast.LENGTH_SHORT).show();
                 Log.d("Response is ","null");
             }
         }
@@ -126,4 +136,5 @@ public class AskFragment extends Fragment {
             sendbutton.setEnabled(false);
         }
     }
+
 }

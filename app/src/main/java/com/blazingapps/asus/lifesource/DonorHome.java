@@ -108,8 +108,8 @@ public class DonorHome extends AppCompatActivity {
     LinearLayout availablitybuttonslayout;
     Button livestreambutton;
     BottomNavigationView bottomNavigationView;
-    RelativeLayout rootlayout;
-
+    RelativeLayout rootlayout,timelayout;
+    MultiSelectToggleGroup weekdays;
     ImageView animcloud, tickimg,crossimg;
 
     private FirebaseAuth mAuth;
@@ -129,6 +129,8 @@ public class DonorHome extends AppCompatActivity {
         dialog = builder.create();
 
         rootlayout=findViewById(R.id.rootlayoutdonor);
+        weekdays=findViewById(R.id.group_weekdays);
+        timelayout=findViewById(R.id.timelayoutroot);
         groupweekdays = findViewById(R.id.group_weekdays);
         sun = findViewById(R.id.sun);
         mon = findViewById(R.id.mon);

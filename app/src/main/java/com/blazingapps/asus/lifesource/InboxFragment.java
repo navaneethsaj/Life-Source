@@ -1,5 +1,6 @@
 package com.blazingapps.asus.lifesource;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,12 +8,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,12 +56,15 @@ public class InboxFragment extends Fragment {
 
     ListView listView;
     ProgressBar progressBar;
+    RelativeLayout root;
     ArrayList<ChatObject> chatObjectArrayList ;
+    private Context mcontext;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
+        mcontext=getActivity();
         url = "https://us-central1-life-source-277b9.cloudfunctions.net/inbox?uid="+sharedPreferences.getString(PUSH_KEY,"");
         chatObjectArrayList = new ArrayList<>();
         return inflater.inflate(R.layout.fragment_inbox, container, false);
@@ -69,6 +75,7 @@ public class InboxFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = view.findViewById(R.id.listview);
+        root=view.findViewById(R.id.rootinbox);
         progressBar = view.findViewById(R.id.progress);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("chat").child(sharedPreferences.getString(PUSH_KEY,""));
@@ -113,7 +120,6 @@ public class InboxFragment extends Fragment {
             if (s!=null){
                 Log.d("Response is ",s);
                 chatObjectArrayList = new ArrayList<>();
-                //Toast.makeText(getActivity(),s,Toast.LENGTH_SHORT).show();
                 try {
                     JSONObject resp = new JSONObject(s);
                     if (resp.getInt("status") == 200){
@@ -132,15 +138,14 @@ public class InboxFragment extends Fragment {
 
                             chatObjectArrayList.add(new ChatObject(question,answers));
                         }
-                        ChatAdapter chatAdapter = new ChatAdapter(getActivity(),R.layout.chatitem,chatObjectArrayList);
+
+                        ChatAdapter chatAdapter = new ChatAdapter(mcontext,R.layout.chatitem,chatObjectArrayList);
                         listView.setAdapter(chatAdapter);
                         listView.setSelection(listView.getCount()-1);
-                    }else {
-                        Toast.makeText(getActivity(),"404",Toast.LENGTH_SHORT).show();
-                    }
 
-                    //Toast.makeText(getActivity(),chatObjectArrayList.get(0).getQuestion()+" - "+chatObjectArrayList.get(0).getAnswers().get(0).getAnswer(),Toast.LENGTH_SHORT).show();
-                    //Log.d("dummy",chatObjectArrayList.get(7).getQuestion()+" - "+chatObjectArrayList.get(7).getAnswers().get(0).getAnswer());
+                    }else {
+                        Toast.makeText(mcontext,"404",Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -149,8 +154,8 @@ public class InboxFragment extends Fragment {
             }
             else
             {
-                Toast.makeText(getActivity(),"Try Later",Toast.LENGTH_SHORT).show();
-                Log.d("Response is ","null");
+                    Toast.makeText(mcontext,"Try Later",Toast.LENGTH_SHORT).show();
+                    Log.d("Response is ","null");
             }
         }
 

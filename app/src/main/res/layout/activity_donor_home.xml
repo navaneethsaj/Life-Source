@@ -7,7 +7,6 @@
     android:layout_margin="0dp"
     android:animateLayoutChanges="true"
     android:id="@+id/rootlayoutdonor"
-    android:background="@color/white"
     tools:context=".DonorHome">
 
     <android.support.v7.widget.Toolbar
@@ -15,7 +14,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="10dp"
         android:elevation="8dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/toolbar"
         android:background="@drawable/gradient_appbar">
         <LinearLayout
@@ -68,8 +67,7 @@
                     android:orientation="vertical"
                     android:id="@+id/profilelayout"
                     android:paddingBottom="15dp"
-                    android:elevation="4dp"
-                    android:layout_marginTop="10dp"
+                    android:elevation="1dp"
                     android:layout_height="wrap_content">
                     <TextView
                         android:gravity="center"
@@ -192,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/locationlayout"
-                    android:elevation="4dp"
+                    android:elevation="1dp"
                     android:background="@drawable/gradient_white"
                     android:layout_marginVertical="10dp"
                     android:layout_below="@id/availablitylayout"
@@ -339,7 +337,7 @@
                     android:layout_below="@+id/profilelayout"
                     android:id="@+id/availablitylayout"
                     android:layout_marginBottom="4dp"
-                    android:elevation="4dp"
+                    android:elevation="1dp"
                     android:background="@drawable/gradient_white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -395,24 +393,33 @@
                         </LinearLayout>
                     </LinearLayout>
                     <View
-                        android:layout_marginBottom="4dp"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/linecolor"/>
+                        android:layout_height="4dp"
+                        android:background="#f9f9f9"/>
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Available Days"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
                     <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
                         android:id="@+id/group_weekdays"
                         android:layout_marginHorizontal="4dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tbgChildSpacing="auto">
+                        android:layout_marginVertical="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tbgChildSpacing="auto">
 
-                    <com.nex3z.togglebuttongroup.button.CircularToggle
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
                         android:id="@+id/sun"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sun"/>
 
-                    <com.nex3z.togglebuttongroup.button.CircularToggle
+
+                        <com.nex3z.togglebuttongroup.button.CircularToggle
                         android:id="@+id/mon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -453,36 +460,15 @@
                             android:text="Sat"/>
 
                     </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@color/linecolor"/>
                     <RelativeLayout
-                        android:layout_marginTop="8dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_marginLeft="4dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="From"/>
-                        <TextView
-                            android:layout_marginRight="4dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="To"/>
-                    </RelativeLayout>
-                <RelativeLayout
-                    android:paddingBottom="10dp"
+                        android:id="@+id/timelayoutroot"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <one.xcorp.widget.swipepicker.SwipePicker
                         android:id="@+id/fromhour"
-                        android:layout_margin="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:state_activated="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -493,7 +479,7 @@
                     <one.xcorp.widget.swipepicker.SwipePicker
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:hint="Min"
                         app:step="5"
                         android:state_activated="true"
@@ -508,7 +494,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Hour"
                         android:state_activated="true"
-                        android:layout_margin="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_toLeftOf="@+id/tomin"
                         app:maxValue="23"
                         app:minValue="00"
@@ -519,13 +505,33 @@
                         android:hint="Min"
                         android:state_activated="true"
                         android:id="@+id/tomin"
-                        android:layout_margin="4dp"
+                        android:layout_marginHorizontal="4dp"
                         app:maxValue="59"
                         app:minValue="00"
                         app:step="5"
                         android:layout_alignParentEnd="true"
                         app:value="30" />
                 </RelativeLayout>
+                    <RelativeLayout
+                        android:paddingBottom="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_marginLeft="28dp"
+                            android:textStyle="bold"
+                            android:layout_alignParentStart="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Available From"/>
+                        <TextView
+                            android:layout_marginRight="32dp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Available To"/>
+                    </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -537,7 +543,7 @@
         android:layout_height="60dp"
         app:itemTextColor="@color/bottom_nav_color"
         app:itemIconTint="@color/bottom_nav_color"
-        android:background="@drawable/nav_bg"
+        android:background="@drawable/gradient_bottomnav"
         app:menu="@menu/navigation_items">
 
     </android.support.design.widget.BottomNavigationView>
@@ -665,8 +671,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/linecolor"
-            android:layout_margin="10dp"/>
+            android:layout_marginVertical="5dp"/>
         <fragment android:name="com.blazingapps.asus.lifesource.InboxFragment"
             android:id="@+id/inboxfragment"
             android:layout_weight="2"

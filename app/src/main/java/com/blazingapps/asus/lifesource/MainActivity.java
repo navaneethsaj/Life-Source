@@ -265,8 +265,17 @@ public class MainActivity extends AppCompatActivity {
                         String mobile = donorArray.getJSONObject(i).getString("mobile");
                         String distance = donorArray.getJSONObject(i).getString("distance");
                         String bgroup = donorArray.getJSONObject(i).getString("bgroup");
-
-                        donorObjs.add(new RespDonorObj(name,mobile,bgroup,distance));
+                        String uid = donorArray.getJSONObject(i).getString("uid");
+                        double reqcount;
+                        double serviced;
+                        try {
+                             reqcount= donorArray.getJSONObject(i).getDouble("reqcount");
+                             serviced = donorArray.getJSONObject(i).getDouble("serviced");
+                        }catch (NullPointerException e){
+                            reqcount=0;
+                            serviced=0;
+                        }
+                        donorObjs.add(new RespDonorObj(name,mobile,bgroup,distance,uid,reqcount,serviced));
                     }
 
                     DonorAdapter donorAdapter = new DonorAdapter(MainActivity.this,R.layout.list_view_items,donorObjs);
@@ -390,8 +399,8 @@ public class MainActivity extends AppCompatActivity {
                                             //+"/nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
                                             //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
                                     ;
-                                    String locateustxt="locate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
-                                            +","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
+                                    String locateustxt="locate us : "+"http://lifesource.com/locate?lat="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+                                            +"&lon="+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
                                     SmsManager smsManager = SmsManager.getDefault();
                                     smsManager.sendTextMessage(mobile, null, smstext, null, null);
                                     smsManager.sendTextMessage(mobile, null, locateustxt, null, null);

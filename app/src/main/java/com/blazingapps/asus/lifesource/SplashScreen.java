@@ -30,6 +30,9 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         sharedPreferences = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
+//        Intent mainIntent = new Intent(SplashScreen.this,MapActivityNav.class);
+//        startActivity(mainIntent);
+//        finish();
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {

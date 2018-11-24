@@ -17,6 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
@@ -33,6 +39,7 @@ public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
     private static final String HOSPITAL_ID = "hospitalid";
     private static final String HOSPITAL_REF = "hospital";
     private static final String PUSH_KEY = "pushkey";
+    private static final String DONOR_REF = "blooddonors";
 
 
     ArrayList<RespDonorObj> donorObjArrayList;
@@ -62,15 +69,33 @@ public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
         TextView textViewmobile = v.findViewById(R.id.mobile);
         TextView textViewdistance = v.findViewById(R.id.distance);
         TextView textViewbloodgroup = v.findViewById(R.id.bloodgroup);
+        TextView reliablity = v.findViewById(R.id.reliablity);
         ImageView callicon = v.findViewById(R.id.callicon);
         ImageView smsicon = v.findViewById(R.id.sendsmsicon);
 
-        final String name,mobile,distance,bloodgroup;
+        final String name;
+        final String mobile;
+        final String distance;
+        final String bloodgroup;
+        final String uid;
+        String percent;
         name = donorObjArrayList.get(position).getName();
         mobile = donorObjArrayList.get(position).getMobile();
         distance = donorObjArrayList.get(position).getDistance();
         bloodgroup = donorObjArrayList.get(position).getBloodgroup();
+        uid = donorObjArrayList.get(position).getUid();
 
+        try {
+            if (donorObjArrayList.get(position).getServiced()!=0 && donorObjArrayList.get(position).getReqcount()!=0) {
+                double fraction = donorObjArrayList.get(position).getServiced() / donorObjArrayList.get(position).getReqcount();
+                fraction *= 100;
+                percent = String.valueOf((int)fraction) + "% Reliability";
+            }else {
+                percent="New Donor";
+            }
+        }catch (Exception e){
+            percent="New Donor";
+        }
 //        name = "sasi";
 //        mobile="42424";
 //        distance="23";
@@ -80,6 +105,7 @@ public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
         textViewmobile.setText(mobile);
         textViewdistance.setText(distance);
         textViewbloodgroup.setText(bloodgroup);
+        reliablity.setText(percent);
         callicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,13 +127,32 @@ public class DonorAdapter extends ArrayAdapter<RespDonorObj> {
                         //+"\nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
                         //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
                         ;
-                String locateustxt="locate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
-                +","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
+                String locateustxt="locate us : "+"http://lifesource.com/locate?lat="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+                +"&lon="+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
                 //Log.d("TAG",smstext);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(mobile, null, smstext, null, null);
                 smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
                 Toast.makeText(getContext(),"Request Sent",Toast.LENGTH_LONG).show();
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(DONOR_REF).child(uid).child("reqcount");
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        long count = 0;
+                        if (dataSnapshot.getValue() != null) {
+                            count = (long) dataSnapshot.getValue();
+                        }
+                        count++;
+                        myRef.setValue(count);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 

@@ -50,6 +50,7 @@
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
     <ScrollView
+        android:visibility="gone"
         android:layout_below="@id/toolbar"
         android:layout_above="@+id/bottomnavigator"
         android:layout_width="match_parent"
@@ -679,16 +680,24 @@
             android:layout_height="0dp" />
     </LinearLayout>
     <RelativeLayout
-        android:visibility="gone"
+        android:layout_above="@id/bottomnavigator"
         android:layout_width="match_parent"
         android:id="@+id/ambulanceLayout"
         android:layout_height="wrap_content">
         <ListView
+            android:layout_above="@id/ambubutton"
             android:id="@+id/ambulancelistview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </ListView>
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/ambubutton"
+            android:onClick="searchAmbu"
+            android:text="SearchAmbu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -52,7 +52,7 @@ public class AmbuAdapter extends ArrayAdapter<RespDonorObj> {
     private static final String LONGITUDE = "longitude";
 
 
-    ArrayList<RespDonorObj> ambuList;
+    ArrayList<AmbRespObject> ambuList;
     Context context;
     SharedPreferences sharedPreferences;
 
@@ -85,11 +85,10 @@ public class AmbuAdapter extends ArrayAdapter<RespDonorObj> {
         final String name;
         final String mobile;
         final String distance;
-        final String bloodgroup;
         final String uid;
         String percent;
         name = ambuList.get(position).getName();
-        mobile = ambuList.get(position).getMobile();
+        mobile = ambuList.get(position).getContactno();
         distance = ambuList.get(position).getDistance();
         uid = ambuList.get(position).getUid();
 

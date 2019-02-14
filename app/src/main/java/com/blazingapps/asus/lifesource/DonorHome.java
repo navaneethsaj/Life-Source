@@ -11,6 +11,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
@@ -49,11 +50,19 @@ import com.nex3z.togglebuttongroup.button.CircularToggle;
 import com.nex3z.togglebuttongroup.button.OnCheckedChangeListener;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import one.xcorp.widget.swipepicker.SwipePicker;
 
 public class DonorHome extends AppCompatActivity {
@@ -95,6 +104,7 @@ public class DonorHome extends AppCompatActivity {
     SwipePicker fromhour,tohour,frommin,tomin;
     MultiSelectToggleGroup groupweekdays;
     CircularToggle sun,mon,tue,wed,thu,fri,sat;
+    ListView ambulanceListview;
     TextView pname,paddress,platitude,plongitude,pcontact,pgroup,availabletextview,streamingtextview;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -113,7 +123,6 @@ public class DonorHome extends AppCompatActivity {
     MultiSelectToggleGroup weekdays;
     ImageView animcloud, tickimg,crossimg;
     RelativeLayout ambulayout;
-    ListView ambulistview;
 
     private FirebaseAuth mAuth;
 
@@ -168,6 +177,7 @@ public class DonorHome extends AppCompatActivity {
         availablitybuttonslayout = findViewById(R.id.availableswitches);
         profilelayout = findViewById(R.id.profilelayout);
         crossimg = findViewById(R.id.crossimg);
+        ambulanceListview = findViewById(R.id.ambulancelistview);
         bloodImageView = findViewById(R.id.bloodgroupImageview);
         bottomNavigationView = findViewById(R.id.bottomnavigator);
         tipslayout = findViewById(R.id.tipslayout);
@@ -779,6 +789,84 @@ public class DonorHome extends AppCompatActivity {
                 return R.drawable.abminus;
                 default:
                     return 0;
+        }
+    }
+
+    public void searchAmbu(View view) {
+        new AmbuAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getambulance?lat=10&long=10&uid=fsfsd");
+    }
+
+    class AmbuAsyncTask extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(strings[0])
+                    .build();
+
+            Response response = null;
+            try {
+                response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+            if (s==null){
+                Snackbar.make(rootlayout,"Network Slow",Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Network Slow",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject responseObject = new JSONObject(s);
+                Log.d("status", String.valueOf(responseObject.getInt("status")));
+                if (responseObject.getInt("status") == 200){
+                    JSONArray donorArray = responseObject.getJSONArray("ambulance");
+                    if(donorArray.length()==0){
+                        Snackbar.make(rootlayout,"No Ambulance Available",Snackbar.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"No Donor Available",Toast.LENGTH_SHORT).show();
+                    }
+                    ArrayList<AmbRespObject> ambObjects = new ArrayList<>();
+
+                    for (int i =0 ; i < donorArray.length() ; ++i){
+                        String name = donorArray.getJSONObject(i).getString("name");
+                        String mobile = donorArray.getJSONObject(i).getString("mobile");
+                        String distance = donorArray.getJSONObject(i).getString("distance");
+                        String uid = donorArray.getJSONObject(i).getString("uid");
+                        double reqcount;
+                        double serviced;
+                        try {
+                            reqcount= donorArray.getJSONObject(i).getDouble("reqcount");
+                            serviced = donorArray.getJSONObject(i).getDouble("serviced");
+                        }catch (NullPointerException e){
+                            reqcount=0;
+                            serviced=0;
+                        }
+                        ambObjects.add(new AmbRespObject(name,distance,mobile,uid,reqcount,serviced));
+                    }
+
+                    AmbuAdapter ambuAdapter = new AmbuAdapter(DonorHome.this,R.layout.list_view_items,ambObjects);
+                    ambulanceListview.setAdapter(ambuAdapter);
+                }else {
+                    Snackbar.make(rootlayout,"404 Error",Snackbar.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(),"404 Error",Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                Log.d("exception","jsonexception occoured");
+                e.printStackTrace();
+            }
+            super.onPostExecute(s);
         }
     }
 

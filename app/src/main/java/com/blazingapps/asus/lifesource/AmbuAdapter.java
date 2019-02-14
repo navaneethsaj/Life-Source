@@ -126,13 +126,16 @@ public class AmbuAdapter extends ArrayAdapter<RespDonorObj> {
         smsicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String uid=sharedPreferences.getString(PUSH_KEY,"");
+                String phone=sharedPreferences.getString(DONOR_CONTACT,"");
                 String smstext = "Dear "+name+"\nYou are requested to Arrive at "+
                         "contact no : "+sharedPreferences.getString(DONOR_NAME,"")+" , "+sharedPreferences.getString(DONOR_CONTACT,"")
                         //+"\nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
                         //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
                         ;
                 String locateustxt="location : "+"http://lifesource.com/locateaccident?lat="+String.valueOf(sharedPreferences.getFloat(DONOR_LATITUDE,0))
-                        +"&lon="+String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0));
+                        +"&lon="+String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0)
+                +"&phone="+phone);
                 //Log.d("TAG",smstext);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(mobile, null, smstext, null, null);

@@ -49,6 +49,7 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     private LocationManager mLocationManager;
     Location destlocation;
     Button button;
+    String donorPhone="";
     private boolean notcounted=true;
 
     @SuppressLint("MissingPermission")
@@ -59,6 +60,8 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
         Uri uri = intent.getData();
         lat = uri.getQueryParameter("lat");
         lon = uri.getQueryParameter("lon");
+        donorPhone = uri.getQueryParameter("phone");
+
         Mapbox.getInstance(this, "pk.eyJ1IjoibmF2YW5lZXRoc2FqIiwiYSI6ImNqb3ZnM2hlbTFoa2ozcWxoYXY0bndpNWYifQ.7PMJIi-GMu2yVPdLCFP7lg");
         setContentView(R.layout.activity_map_nav);
         mapView = findViewById(R.id.mapView);
@@ -204,4 +207,5 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     public void onProviderDisabled(String s) {
 
     }
+
 }

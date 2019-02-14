@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
     Location destlocation;
     Button button;
     private boolean notcounted=true;
+    String phone="";
 
     @SuppressLint("MissingPermission")
     @Override
@@ -62,6 +64,7 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
         Uri uri = intent.getData();
         lat = uri.getQueryParameter("lat");
         lon = uri.getQueryParameter("lon");
+        phone = uri.getQueryParameter("phone");
         Mapbox.getInstance(this, "pk.eyJ1IjoibmF2YW5lZXRoc2FqIiwiYSI6ImNqb3ZnM2hlbTFoa2ozcWxoYXY0bndpNWYifQ.7PMJIi-GMu2yVPdLCFP7lg");
         setContentView(R.layout.activity_map_nav);
         mapView = findViewById(R.id.mapView);
@@ -79,6 +82,8 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
 
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
                 0, this);
+
+        acknowledgeService();
     }
 
     @Override
@@ -206,5 +211,21 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    public void acknowledgeService(){
+//        String smstext = "An ambulance will arrive shortly"+
+//                "contact no : "+sharedPreferences.getString(DONOR_NAME,"")+" , "+sharedPreferences.getString(DONOR_CONTACT,"")
+//                //+"\nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+//                //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
+//                ;
+//        String locateustxt="location : "+"http://lifesource.com/locateaccident?lat="+String.valueOf(sharedPreferences.getFloat(DONOR_LATITUDE,0))
+//                +"&lon="+String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0));
+//        //Log.d("TAG",smstext);
+        String msg = "An ambulance will arrive shortly";
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phone, null, msg, null, null);
+        //smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
+        Toast.makeText(getApplicationContext(),"Request Sent",Toast.LENGTH_LONG).show();
     }
 }

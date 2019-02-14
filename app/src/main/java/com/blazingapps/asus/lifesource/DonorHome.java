@@ -793,7 +793,9 @@ public class DonorHome extends AppCompatActivity {
     }
 
     public void searchAmbu(View view) {
-        new AmbuAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getambulance?lat=10&long=10&uid=fsfsd");
+        String lat= String.valueOf(sharedPreferences.getFloat(DONOR_LATITUDE,0));
+        String lon= String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0));
+        new AmbuAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getambulance?lat="+lat+"&long="+lon);
     }
 
     class AmbuAsyncTask extends AsyncTask<String,Void,String> {

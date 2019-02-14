@@ -31,6 +31,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener , LocationListener{
@@ -48,6 +49,8 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     private LocationManager mLocationManager;
     Location destlocation;
     Button button;
+    private boolean notcounted=true;
+
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +150,7 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     public void onLocationChanged(Location location) {
         Log.d("TAGZ", String.valueOf(location.distanceTo(destlocation)));
         button.setText(String.valueOf(location.distanceTo(destlocation)));
-        if (location.distanceTo(destlocation) < 100){
+        if (location.distanceTo(destlocation) < 100 && notcounted){
 
             button.setText("You Have Reached The Destination");
             Log.d("TAGZ","Target Reached");
@@ -158,7 +161,7 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    long count = 1;
+                    long count = 0;
                     if (dataSnapshot.getValue() != null){
                         count = (long) dataSnapshot.getValue();
                     }
@@ -166,6 +169,8 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
                     myRef.setValue(count).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            notcounted=false;
+                            Toast.makeText(getApplicationContext(),"You have reached destination",Toast.LENGTH_LONG).show();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

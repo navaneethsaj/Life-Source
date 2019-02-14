@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,6 +52,8 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
     private LocationManager mLocationManager;
     Location destlocation;
     Button button;
+    private boolean notcounted=true;
+
     @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +153,7 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
     public void onLocationChanged(Location location) {
         Log.d("TAGZ", String.valueOf(location.distanceTo(destlocation)));
         button.setText(String.valueOf(location.distanceTo(destlocation)));
-        if (location.distanceTo(destlocation) < 100){
+        if (location.distanceTo(destlocation) < 100 && notcounted){
 
             button.setText("You Have Reached The Destination");
             Log.d("TAGZ","Target Reached");
@@ -161,7 +164,7 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    long count = 1;
+                    long count = 0;
                     if (dataSnapshot.getValue() != null){
                         count = (long) dataSnapshot.getValue();
                     }
@@ -169,11 +172,13 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
                     myRef.setValue(count).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-
+                            notcounted=false;
+                            Toast.makeText(getApplicationContext(),"You have reached destination",Toast.LENGTH_LONG).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(),":(",Toast.LENGTH_LONG).show();
 
                         }
                     });

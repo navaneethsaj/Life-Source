@@ -131,8 +131,8 @@ public class AmbuAdapter extends ArrayAdapter<RespDonorObj> {
                         //+"\nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
                         //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
                         ;
-                String locateustxt="location : "+"http://lifesource.com/locateAccident?lat="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
-                        +"&lon="+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0));
+                String locateustxt="location : "+"http://lifesource.com/locateaccident?lat="+String.valueOf(sharedPreferences.getFloat(DONOR_LATITUDE,0))
+                        +"&lon="+String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0));
                 //Log.d("TAG",smstext);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(mobile, null, smstext, null, null);

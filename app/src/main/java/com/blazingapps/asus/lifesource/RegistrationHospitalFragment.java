@@ -499,6 +499,7 @@ public class RegistrationHospitalFragment extends Fragment {
             @Override
             public void onVerificationFailed(FirebaseException e) {
                 Toast.makeText(getActivity(),"Phone Verification Failed",Toast.LENGTH_SHORT).show();
+                Log.d("TAGZ",e.getLocalizedMessage());
                 isphoneVerified = false;
                 if (dialog.isShowing()){
                     dialog.dismiss();

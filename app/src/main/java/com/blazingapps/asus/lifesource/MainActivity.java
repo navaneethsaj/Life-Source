@@ -2,6 +2,7 @@ package com.blazingapps.asus.lifesource;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -198,10 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         titlesearch.setText("Emergency Search");
                         break;
                     case R.id.action_developers:
-                        searchresulttextview.setVisibility(View.GONE);
-                        finddonorlayout.setVisibility(View.GONE);
-                        profilelayout.setVisibility(View.GONE);
-                        developerlayout.setVisibility(View.VISIBLE);
+                        startActivity(new Intent(getApplicationContext(),DoctorsAddActivity.class));
                         break;
                 }
                 return true;

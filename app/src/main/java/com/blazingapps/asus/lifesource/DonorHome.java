@@ -397,13 +397,14 @@ public class DonorHome extends AppCompatActivity {
                         tipslayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_developers:
-                        locationlayout.setVisibility(View.GONE);
-                        profilelayout.setVisibility(View.GONE);
-                        developerlayout.setVisibility(View.VISIBLE);
-                        chatlayout.setVisibility(View.GONE);
-                        tipslayout.setVisibility(View.GONE);
-                        ambulayout.setVisibility(View.GONE);
-                        availablitylayout.setVisibility(View.GONE);
+//                        locationlayout.setVisibility(View.GONE);
+//                        profilelayout.setVisibility(View.GONE);
+//                        developerlayout.setVisibility(View.VISIBLE);
+//                        chatlayout.setVisibility(View.GONE);
+//                        tipslayout.setVisibility(View.GONE);
+//                        ambulayout.setVisibility(View.GONE);
+//                        availablitylayout.setVisibility(View.GONE);
+                        startActivity(new Intent(DonorHome.this,SearchDoctor.class));
                         break;
                     case R.id.action_ambulance:
                         locationlayout.setVisibility(View.GONE);

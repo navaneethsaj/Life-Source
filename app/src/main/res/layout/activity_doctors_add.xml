@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HospitalAdd">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/gradient_white"
+        android:paddingBottom="15dp"
+        android:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_marginVertical="4dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/registration"
+            android:gravity="center"
+            android:paddingVertical="3dp"/>
+        <LinearLayout
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/namelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                android:src="@drawable/namedetail"/>
+            <TextView
+                android:text="Name"
+                android:textColor="@color/textcolor"
+                android:layout_width="100dp"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:textSize="14sp"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                android:textColor="@color/textcolor"
+                android:layout_gravity="bottom"
+                android:id="@+id/bname"/>
+        </LinearLayout>
+        <LinearLayout
+            android:paddingHorizontal="10dp"
+            android:id="@+id/contactnolayout"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                android:src="@drawable/phonedetail"/>
+            <TextView
+                android:text="Contact no"
+                android:textColor="@color/textcolor"
+                android:layout_gravity="bottom"
+                android:layout_width="100dp"
+                android:textSize="14sp"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:textColor="@color/textcolor"
+                android:textSize="14sp"
+                android:layout_gravity="bottom"
+                android:id="@+id/contactno"/>
+        </LinearLayout>
+        <LinearLayout
+            android:paddingHorizontal="10dp"
+            android:id="@+id/specialitylayout"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                />
+            <TextView
+                android:text="Specialization"
+                android:textColor="@color/textcolor"
+                android:layout_gravity="bottom"
+                android:layout_width="100dp"
+                android:textSize="14sp"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColor="@color/textcolor"
+                android:layout_gravity="bottom"
+                android:id="@+id/speciality"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/add_doctor_button"
+            android:onClick="adddoctor"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#c63131"
+            android:text="Active Doctors"
+            android:textSize="15dp"
+            android:textColor="#fff"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:paddingVertical="3dp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/recycledoctors"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

@@ -27,6 +27,7 @@ import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,6 +112,8 @@ public class DonorHome extends AppCompatActivity {
     RelativeLayout rootlayout,timelayout;
     MultiSelectToggleGroup weekdays;
     ImageView animcloud, tickimg,crossimg;
+    RelativeLayout ambulayout;
+    ListView ambulistview;
 
     private FirebaseAuth mAuth;
 
@@ -139,6 +142,7 @@ public class DonorHome extends AppCompatActivity {
         thu = findViewById(R.id.thu);
         fri = findViewById(R.id.fri);
         sat = findViewById(R.id.sat);
+        ambulayout = findViewById(R.id.ambulanceLayout);
 
         fromhour = findViewById(R.id.fromhour);
         frommin = findViewById(R.id.frommin);
@@ -370,6 +374,7 @@ public class DonorHome extends AppCompatActivity {
                         locationlayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.GONE);
                         chatlayout.setVisibility(View.GONE);
+                        ambulayout.setVisibility(View.GONE);
                         tipslayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_location:
@@ -378,6 +383,7 @@ public class DonorHome extends AppCompatActivity {
                         developerlayout.setVisibility(View.GONE);
                         availablitylayout.setVisibility(View.GONE);
                         chatlayout.setVisibility(View.GONE);
+                        ambulayout.setVisibility(View.GONE);
                         tipslayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_developers:
@@ -386,20 +392,22 @@ public class DonorHome extends AppCompatActivity {
                         developerlayout.setVisibility(View.VISIBLE);
                         chatlayout.setVisibility(View.GONE);
                         tipslayout.setVisibility(View.GONE);
+                        ambulayout.setVisibility(View.GONE);
                         availablitylayout.setVisibility(View.GONE);
                         break;
-                    case R.id.action_tips:
+                    case R.id.action_ambulance:
                         locationlayout.setVisibility(View.GONE);
                         chatlayout.setVisibility(View.GONE);
                         profilelayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.GONE);
-                        tipslayout.setVisibility(View.VISIBLE);
+                        ambulayout.setVisibility(View.VISIBLE);
                         availablitylayout.setVisibility(View.GONE);
                         break;
                     case R.id.action_chat:
                         locationlayout.setVisibility(View.GONE);
                         profilelayout.setVisibility(View.GONE);
                         developerlayout.setVisibility(View.GONE);
+                        ambulayout.setVisibility(View.GONE);
                         tipslayout.setVisibility(View.GONE);
                         availablitylayout.setVisibility(View.GONE);
                         chatlayout.setVisibility(View.VISIBLE);

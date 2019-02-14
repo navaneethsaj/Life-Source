@@ -69,6 +69,12 @@ public class SplashScreen extends AppCompatActivity {
                         startActivity(mainIntent);
                         finish();
                     }
+                    else if (sharedPreferences.getString(ADMIN,"").equals("ambulance"))
+                    {
+                        Intent mainIntent = new Intent(SplashScreen.this,AmbuActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                    }
                 }else {
                     Intent mainIntent = new Intent(SplashScreen.this,Registration.class);
                     startActivity(mainIntent);

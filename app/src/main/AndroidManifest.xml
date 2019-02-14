@@ -40,14 +40,29 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".MapActivityNav">
             <intent-filter>
-                <data android:scheme="http"/>
-                <data android:host="lifesource.com"/>
-                <data android:path="/locate"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http" />
+                <data android:host="lifesource.com" />
+                <data android:path="/locate" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        <activity android:name=".MapActivityNavAmbu">
+        <intent-filter>
+            <data android:scheme="http" />
+            <data android:host="lifesource.com" />
+            <data android:path="/locateaccident" />
+
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+        </intent-filter>
+    </activity>
+        <activity android:name=".AmbuActivity"></activity>
     </application>
 
 </manifest>

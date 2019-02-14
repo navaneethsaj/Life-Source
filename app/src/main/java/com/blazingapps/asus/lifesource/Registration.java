@@ -64,7 +64,6 @@ public class Registration extends AppCompatActivity implements RegistrationHospi
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-
     }
 
 
@@ -120,13 +119,17 @@ public class Registration extends AppCompatActivity implements RegistrationHospi
                 case 1:
                     RegistrationHospitalFragment hospitalFragment = new RegistrationHospitalFragment();
                     return hospitalFragment;
+                case 2:
+                    AmbulanceRegisterFragment ambulanceRegisterFragment = new AmbulanceRegisterFragment();
+                    return ambulanceRegisterFragment;
+
             }
             return null; // wont happen
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 }

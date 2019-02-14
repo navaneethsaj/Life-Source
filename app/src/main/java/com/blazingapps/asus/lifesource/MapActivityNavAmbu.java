@@ -1,6 +1,7 @@
 package com.blazingapps.asus.lifesource;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -43,6 +45,9 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
     private static final String DONOR_LATITUDE ="donorlatitude";
     private static final String DONOR_LONGITUDE = "donorlongitude";
     private static final String DONOR_CONTACT = "donorcontact";
+
+    private static final String ISAVAILABLE = "available";
+
     SharedPreferences sharedPreferences;
     private static final String AMB_REF = "ambulanceref";
 
@@ -54,7 +59,11 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
     Location destlocation;
     Button button;
     private boolean notcounted=true;
+    private boolean isAvailable = true;
+
+    SharedPreferences.Editor editor;
     String phone="";
+    Button accept,reject;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -69,10 +78,14 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_map_nav);
         mapView = findViewById(R.id.mapView);
         button = findViewById(R.id.button);
+        accept = findViewById(R.id.accept);
+        reject=findViewById(R.id.reject);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        sharedPreferences = getSharedPreferences(MYPREF,MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
 
         destlocation = new Location("");
         destlocation.setLatitude(Float.valueOf(lat));
@@ -83,7 +96,38 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
                 0, this);
 
-        acknowledgeService();
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                acknowledgeService();
+                updateAvailablity(false);
+            }
+        });
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                deacknowledgeService();
+                updateAvailablity(true);
+            }
+        });
+    }
+
+    private void deacknowledgeService() {
+        //String smstext = "An ambulance will arrive shortly"+
+//                "contact no : "+sharedPreferences.getString(DONOR_NAME,"")+" , "+sharedPreferences.getString(DONOR_CONTACT,"")
+//                //+"\nlocate us : "+"https://maps.google.com/?q="+String.valueOf(sharedPreferences.getFloat(LATITUDE,0))
+//                //+","+String.valueOf(sharedPreferences.getFloat(LONGITUDE,0))
+//                ;
+//        String locateustxt="location : "+"http://lifesource.com/locateaccident?lat="+String.valueOf(sharedPreferences.getFloat(DONOR_LATITUDE,0))
+//                +"&lon="+String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0));
+//        //Log.d("TAG",smstext);
+                String msg = "Request rejected";
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phone, null, msg, null, null);
+        //smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
+        Toast.makeText(getApplicationContext(),"Request Sent",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -227,5 +271,31 @@ public class MapActivityNavAmbu extends AppCompatActivity implements OnMapReadyC
         smsManager.sendTextMessage(phone, null, msg, null, null);
         //smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
         Toast.makeText(getApplicationContext(),"Request Sent",Toast.LENGTH_LONG).show();
+    }
+
+    public void updateAvailablity(boolean av){
+        isAvailable = av;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(AMB_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("available");
+        myRef.setValue(isAvailable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                if (isAvailable){
+                    editor.putBoolean(ISAVAILABLE,true);
+                    editor.commit();
+                }else {
+
+                    editor.putBoolean(ISAVAILABLE,false);
+                    editor.commit();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                isAvailable = !isAvailable;
+            }
+        });
     }
 }

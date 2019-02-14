@@ -16,8 +16,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationCallback;
@@ -50,25 +55,43 @@ public class AmbuActivity extends AppCompatActivity {
 
     private static final String ADMIN = "admin";
     private static final int REQCODE = 99;
+    private static final String ISAVAILABLE = "available";
 
     private FirebaseAuth mAuth;
+    TextView name,phone,vehicle;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    Button availablityButton;
+    private boolean isAvailable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ambu);
-
-
-
         mAuth = FirebaseAuth.getInstance();
-
         sharedPreferences = getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-
+        availablityButton = findViewById(R.id.availablityambulancebutton);
+        name = findViewById(R.id.apname);
+        phone=findViewById(R.id.apphone);
+        vehicle=findViewById(R.id.appvehicleno);
+        name.setText(sharedPreferences.getString(AMBNAME,""));
+        phone.setText(sharedPreferences.getString(AMBPHONE,""));
+        vehicle.setText(sharedPreferences.getString(AMBVEHICLE,""));
         requestLocationUpdate();
+        isAvailable = sharedPreferences.getBoolean(ISAVAILABLE,true);
+        if (isAvailable){
+            availablityButton.setText("Available");
+        }else {
+            availablityButton.setText("Not Available");
+        }
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updatePhoneNo();
+            }
+        });
     }
 
 
@@ -172,5 +195,78 @@ public class AmbuActivity extends AppCompatActivity {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void updateAvailablity(View view){
+        isAvailable = !isAvailable;
+        if (isAvailable){
+            availablityButton.setText("Available");
+        }else {
+            availablityButton.setText("NOt available");
+        }
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(AMB_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("available");
+        myRef.setValue(isAvailable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                if (isAvailable){
+                    availablityButton.setText("Available");
+                    editor.putBoolean(ISAVAILABLE,true);
+                    editor.commit();
+                }else {
+                    availablityButton.setText("Not Available");
+                    editor.putBoolean(ISAVAILABLE,false);
+                    editor.commit();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                isAvailable = !isAvailable;
+            }
+        });
+    }
+
+    public void reject(View view) {
+    }
+
+    public void accept(View view) {
+    }
+
+    private void updatePhoneNo() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        editText.setPadding(20,20,20,20);
+        builder.setTitle("Phone Number").setView(editText).setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final String phoneno = editText.getText().toString();
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(AMB_REF);
+                HashMap<String ,Object> hashMap = new HashMap<>();
+                hashMap.put("contactno",phoneno);
+                myRef.child(sharedPreferences.getString(PUSH_KEY,"")).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+//                        Snackbar.make(rootlayout,"Updated",Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                        editor.putString(AMBPHONE,phoneno);
+                        editor.commit();
+                        phone.setText(phoneno);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        Snackbar.make(rootlayout,"Failed",Snackbar.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).setNegativeButton("Cancel",null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

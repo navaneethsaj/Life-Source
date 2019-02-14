@@ -30,6 +30,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     Button button;
     String donorPhone="";
     private boolean notcounted=true;
+    Button accept,reject;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -78,8 +80,28 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+
                 0, this);
+        accept = findViewById(R.id.accept);
+        reject=findViewById(R.id.reject);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                acknowledgeService();
+//                updateAvailablity(false);
+            }
+        });
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                deacknowledgeService();
+//                updateAvailablity(true);
+            }
+        });
     }
+
 
     @Override
     protected void onStart() {
@@ -195,7 +217,6 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
 
-
     }
 
     @Override
@@ -207,5 +228,6 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     public void onProviderDisabled(String s) {
 
     }
+
 
 }

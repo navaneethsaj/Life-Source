@@ -1,5 +1,6 @@
 package com.blazingapps.asus.lifesource;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,10 +53,11 @@ public class DoctorAdapter extends ArrayAdapter<DoctorObject> {
     private static final String REGISTERED = "registered";
     private static final String ADMIN = "admin";
     private static final String PUSH_KEY = "pushkey";
-
-    public DoctorAdapter(@NonNull Context context, int resource, @NonNull ArrayList objects, String hspname) {
+    Activity activity;
+    public DoctorAdapter(@NonNull Context context, int resource, @NonNull ArrayList objects, String hspname, Activity searchDoctor) {
         super(context,resource,objects);
         doctorObjects = objects;
+        this.activity = searchDoctor;
         this.context = context;
         this.hspt=hspname;
         sharedPreferences = context.getSharedPreferences(MYPREF,Context.MODE_PRIVATE);
@@ -76,12 +79,19 @@ public class DoctorAdapter extends ArrayAdapter<DoctorObject> {
         TextView phonetv = v.findViewById(R.id.drphone);
         TextView timetv = v.findViewById(R.id.drtime);
         TextView hsptl = v.findViewById(R.id.hsptl);
+        Button book = v.findViewById(R.id.book_now);
 
         nametv.setText(doctorObjects.get(position).getName());
         spectv.setText(doctorObjects.get(position).getSpeciality());
         phonetv.setText(doctorObjects.get(position).getPhoneno());
         timetv.setText(doctorObjects.get(position).getTime());
         hsptl.setText(hspt);
+        book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(activity,RazorPayActivity.class));
+            }
+        });
 
         return v;
     }

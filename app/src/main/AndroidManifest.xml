@@ -64,7 +64,14 @@
         </activity>
         <activity android:name=".AmbuActivity" />
         <activity android:name=".DoctorsAddActivity" />
-        <activity android:name=".SearchDoctor"></activity>
+        <activity android:name=".SearchDoctor" />
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_PILkwZ4xJn9CdX" />
+
+        <activity android:name=".PaymentActivity" />
+        <activity android:name=".RazorPayActivity"></activity>
     </application>
 
 </manifest>

@@ -71,8 +71,8 @@ public class SearchDoctor extends AppCompatActivity {
     }
 
     public void search(View view) {
-        new DoctorAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getdoctor?lat="+sharedPreferences.getString(DONOR_LATITUDE,"")
-                +"&long="+sharedPreferences.getString(DONOR_LONGITUDE,"")
+        new DoctorAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getdoctor?lat="+String.valueOf(sharedPreferences.getFloat(DONOR_LATITUDE,0))
+                +"&long="+String.valueOf(sharedPreferences.getFloat(DONOR_LONGITUDE,0))
                 +"&uid="+sharedPreferences.getString(PUSH_KEY,"")+"&spec=GYNO");
     }
 
@@ -126,7 +126,7 @@ public class SearchDoctor extends AppCompatActivity {
                             ));
                         }
                     }
-                    DoctorAdapter doctorAdapter = new DoctorAdapter(SearchDoctor.this,R.layout.layout_doctors,doctorObjects,hspname);
+                    DoctorAdapter doctorAdapter = new DoctorAdapter(SearchDoctor.this,R.layout.layout_doctors,doctorObjects,hspname,SearchDoctor.this);
                     listView.setAdapter(doctorAdapter);
                 }else {
                     //error

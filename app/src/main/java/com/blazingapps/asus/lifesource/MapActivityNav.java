@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,11 +38,23 @@ import android.widget.Toast;
 
 public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallback, MapboxMap.OnMapClickListener , LocationListener{
 
-    private static final String MYPREF = "mypreferences";
-    private static final String PUSH_KEY = "pushkey";
     private static final String DONOR_REF = "blooddonors";
 
+    private static final String DONOR_NAME ="donorname";
+    private static final String DONOR_ADDRESS = "donoraddress";
+    private static final String DONOR_LATITUDE ="donorlatitude";
+    private static final String DONOR_LONGITUDE = "donorlongitude";
+    private static final String DONOR_CONTACT = "donorcontact";
+    private static final String DONOR_GROUP ="donorgroup";
+    private static final String MYPREF = "mypreferences";
+    private static final String REGISTERED = "registered";
+    private static final String PUSH_KEY = "pushkey";
+    private static final String ADMIN = "admin";
+    private static final String STREAMING = "streaming";
+    private static final String AVAILABLE = "availablity";
+
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     private MapView mapView;
     MapboxMap mapboxMap;
@@ -72,6 +85,7 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
         mapView.getMapAsync(this);
 
         sharedPreferences = getSharedPreferences(MYPREF,MODE_PRIVATE);
+        editor=sharedPreferences.edit();
 
         destlocation = new Location("");
         destlocation.setLatitude(Float.valueOf(lat));
@@ -196,7 +210,7 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
                         public void onSuccess(Void aVoid) {
                             notcounted=false;
                             Toast.makeText(getApplicationContext(),"You have reached destination",Toast.LENGTH_LONG).show();
-
+                            updateAvailablity(false);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -227,6 +241,26 @@ public class MapActivityNav extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    public void updateAvailablity(boolean av){
+        boolean isAvailable = av;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(DONOR_REF).child(sharedPreferences.getString(PUSH_KEY,null)).child("available");
+        myRef.setValue(isAvailable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                    editor.putBoolean(AVAILABLE,isAvailable);
+                    editor.commit();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+//                Snackbar.make(rootlayout,"Failed",Snackbar.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

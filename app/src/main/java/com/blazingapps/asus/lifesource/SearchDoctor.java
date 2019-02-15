@@ -3,6 +3,7 @@ package com.blazingapps.asus.lifesource;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class SearchDoctor extends AppCompatActivity {
     private static final String WED = "wed";
     private static final String THU = "thu";
     private static final String FRI = "fri";
+    private AlertDialog alertDialog;
     private static final String SAT = "sat";
     private static final String SUN = "sun";
     private static final String FROM_HOUR = "fromhour";
@@ -62,7 +64,9 @@ public class SearchDoctor extends AppCompatActivity {
         listView=findViewById(R.id.listview);
         button = findViewById(R.id.button);
         sharedPreferences =getSharedPreferences(MYPREF,MODE_PRIVATE);
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Loading...");
+        alertDialog = builder.create();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getBaseContext(),
                 R.array.specialization_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -98,6 +102,10 @@ public class SearchDoctor extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if(!alertDialog.isShowing()){
+                alertDialog.show();
+            }
+
         }
 
         @Override
@@ -136,6 +144,9 @@ public class SearchDoctor extends AppCompatActivity {
                 e.printStackTrace();
             }
             super.onPostExecute(s);
+            if(alertDialog.isShowing()){
+                alertDialog.dismiss();
+            }
         }
     }
 

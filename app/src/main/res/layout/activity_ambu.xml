@@ -6,23 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".AmbuActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.CardView
+        android:elevation="2dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/apname"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/apphone"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/appvehicleno"/>
-    </LinearLayout>
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/apname"/>
+            <TextView
+                android:textSize="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/apphone"/>
+            <TextView
+                android:textSize="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/appvehicleno"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/accrej"

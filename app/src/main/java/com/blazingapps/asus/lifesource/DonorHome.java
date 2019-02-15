@@ -850,12 +850,13 @@ public class DonorHome extends AppCompatActivity {
                         double reqcount;
                         double serviced;
                         try {
-                            reqcount= donorArray.getJSONObject(i).getDouble("reqcount");
-                            serviced = donorArray.getJSONObject(i).getDouble("serviced");
+                            reqcount= donorArray.getJSONObject(i).getInt("reqcount");
+                            serviced = donorArray.getJSONObject(i).getInt("serviced");
                         }catch (NullPointerException e){
                             reqcount=0;
                             serviced=0;
                         }
+                        //Log.d("TAGZ", String.valueOf(reqcount)+uid);
                         ambObjects.add(new AmbRespObject(name,distance,mobile,uid,reqcount,serviced));
                     }
 

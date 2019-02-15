@@ -1,5 +1,6 @@
 package com.blazingapps.asus.lifesource;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,7 @@ public class SearchDoctor extends AppCompatActivity {
     private static final String ADMIN = "admin";
     private static final String PUSH_KEY = "pushkey";
 
+    SharedPreferences sharedPreferences;
     ListView listView;
     Spinner spinner;
     Button button;
@@ -59,6 +61,7 @@ public class SearchDoctor extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         listView=findViewById(R.id.listview);
         button = findViewById(R.id.button);
+        sharedPreferences =getSharedPreferences(MYPREF,MODE_PRIVATE);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getBaseContext(),
                 R.array.specialization_array, android.R.layout.simple_spinner_item);
@@ -68,7 +71,9 @@ public class SearchDoctor extends AppCompatActivity {
     }
 
     public void search(View view) {
-        new DoctorAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getdoctor?lat=10&long=10&uid=11&spec=GYNO");
+        new DoctorAsyncTask().execute("https://us-central1-life-source-277b9.cloudfunctions.net/getdoctor?lat="+sharedPreferences.getString(DONOR_LATITUDE,"")
+                +"&long="+sharedPreferences.getString(DONOR_LONGITUDE,"")
+                +"&uid="+sharedPreferences.getString(PUSH_KEY,"")+"&spec=GYNO");
     }
 
     class DoctorAsyncTask extends AsyncTask<String,Void,String> {

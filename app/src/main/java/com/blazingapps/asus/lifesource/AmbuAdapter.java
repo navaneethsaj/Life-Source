@@ -126,7 +126,7 @@ public class AmbuAdapter extends ArrayAdapter<RespDonorObj> {
         smsicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uid=sharedPreferences.getString(PUSH_KEY,"");
+                //String uid=sharedPreferences.getString(PUSH_KEY,"");
                 String phone=sharedPreferences.getString(DONOR_CONTACT,"");
                 String smstext = "Dear "+name+"\nYou are requested to Arrive at "+
                         "contact no : "+sharedPreferences.getString(DONOR_NAME,"")+" , "+sharedPreferences.getString(DONOR_CONTACT,"")
@@ -142,7 +142,7 @@ public class AmbuAdapter extends ArrayAdapter<RespDonorObj> {
                 smsManager.sendTextMessage(mobile, null, locateustxt, null, null);
                 Toast.makeText(getContext(),"Request Sent",Toast.LENGTH_LONG).show();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference(DONOR_REF).child(uid).child("reqcount");
+                DatabaseReference myRef = database.getReference(AMB_REF).child(uid).child("reqcount");
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

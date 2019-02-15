@@ -124,7 +124,7 @@ public class SearchDoctor extends AppCompatActivity {
                     String hspname = responseObject.getString("hospital");
                     JSONArray jsonArray = responseObject.getJSONArray("doctors");
                     ArrayList<DoctorObject> doctorObjects = new ArrayList<>();
-                    Toast.makeText(getApplicationContext(),spec,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(),spec,Toast.LENGTH_SHORT).show();
                     for (int i=0;i<jsonArray.length();++i){
                         if (jsonArray.getJSONObject(i).getString("speciality").equals(spec)) {
                             doctorObjects.add(new DoctorObject(

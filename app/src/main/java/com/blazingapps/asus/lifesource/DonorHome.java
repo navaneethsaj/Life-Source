@@ -92,6 +92,7 @@ public class DonorHome extends AppCompatActivity {
     private static final String TO_HOUR = "tohour";
     private static final String FROM_MIN = "frommin";
     private static final String TO_MIN = "tomin";
+    private static final String CHATPAID = "chatpaid";
 
     Boolean liveStream = false;
     Boolean isAvailable = true;
@@ -421,7 +422,17 @@ public class DonorHome extends AppCompatActivity {
                         ambulayout.setVisibility(View.GONE);
                         tipslayout.setVisibility(View.GONE);
                         availablitylayout.setVisibility(View.GONE);
-                        chatlayout.setVisibility(View.VISIBLE);
+                        if (sharedPreferences.getBoolean(CHATPAID,false)){
+                            chatlayout.setVisibility(View.VISIBLE);
+                        }else {
+                            Intent i = new Intent(DonorHome.this, RazorPayActivity.class);
+
+                            i.putExtra("message", true);
+
+                            startActivity(i);
+
+                            Toast.makeText(getApplicationContext(),"Please Pay",Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
                 return true;

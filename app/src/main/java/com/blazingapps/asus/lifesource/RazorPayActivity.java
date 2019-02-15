@@ -1,6 +1,8 @@
 package com.blazingapps.asus.lifesource;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,16 +18,33 @@ public class RazorPayActivity extends AppCompatActivity implements PaymentResult
 
     private static final String TAG = "TAGZ";
 
+    private static final String CHATPAID = "chatpaid";
+    private static final String MYPREF = "mypreferences";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    boolean msg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_razor_pay);
         Checkout.preload(getApplicationContext());
+        sharedPreferences = getSharedPreferences(MYPREF,MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+        Intent intent = getIntent();
+
+        msg = intent.getBooleanExtra("message",false);
+
     }
 
     @Override
     public void onPaymentSuccess(String s) {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+        if (msg){
+            editor.putBoolean(CHATPAID,true);
+            editor.commit();
+
+            finish();
+        }
     }
 
     @Override

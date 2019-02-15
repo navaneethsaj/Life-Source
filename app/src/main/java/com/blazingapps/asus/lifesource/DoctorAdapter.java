@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class DoctorAdapter extends ArrayAdapter<DoctorObject> {
+    private String hspt;
     ArrayList<DoctorObject> doctorObjects;
     Context context;
     SharedPreferences sharedPreferences;
@@ -51,10 +52,11 @@ public class DoctorAdapter extends ArrayAdapter<DoctorObject> {
     private static final String ADMIN = "admin";
     private static final String PUSH_KEY = "pushkey";
 
-    public DoctorAdapter(@NonNull Context context, int resource, @NonNull ArrayList objects) {
+    public DoctorAdapter(@NonNull Context context, int resource, @NonNull ArrayList objects, String hspname) {
         super(context,resource,objects);
         doctorObjects = objects;
         this.context = context;
+        this.hspt=hspname;
         sharedPreferences = context.getSharedPreferences(MYPREF,Context.MODE_PRIVATE);
     }
 
@@ -69,6 +71,18 @@ public class DoctorAdapter extends ArrayAdapter<DoctorObject> {
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.layout_doctors, null);
+        TextView nametv = v.findViewById(R.id.drname);
+        TextView spectv = v.findViewById(R.id.drspec);
+        TextView phonetv = v.findViewById(R.id.drphone);
+        TextView timetv = v.findViewById(R.id.drtime);
+        TextView hsptl = v.findViewById(R.id.hsptl);
+
+        nametv.setText(doctorObjects.get(position).getName());
+        spectv.setText(doctorObjects.get(position).getSpeciality());
+        phonetv.setText(doctorObjects.get(position).getPhoneno());
+        timetv.setText(doctorObjects.get(position).getTime());
+        hsptl.setText(hspt);
+
         return v;
     }
 }

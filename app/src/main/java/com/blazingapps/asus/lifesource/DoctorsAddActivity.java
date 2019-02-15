@@ -28,7 +28,7 @@ public class DoctorsAddActivity extends AppCompatActivity {
     private static final String ADMIN = "admin";
     private static final String PUSH_KEY = "pushkey";
     Spinner spinner;
-    EditText contactno,name;
+    EditText contactno,name,time;
     SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class DoctorsAddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_doctors_add);
 
         spinner = findViewById(R.id.speciality);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getBaseContext(),
                 R.array.specialization_array, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -46,13 +46,14 @@ public class DoctorsAddActivity extends AppCompatActivity {
 
         name=findViewById(R.id.bname);
         contactno=findViewById(R.id.contactno);
+        time=findViewById(R.id.time);
 
 
     }
 
     public void adddoctor(View view) {
 
-        DoctorObject doctorObject = new DoctorObject(name.getText().toString(),spinner.getSelectedItem().toString(),contactno.getText().toString());
+        DoctorObject doctorObject = new DoctorObject(name.getText().toString(),spinner.getSelectedItem().toString(),contactno.getText().toString(),time.getText().toString());
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(HOSPITAL_REF);
 

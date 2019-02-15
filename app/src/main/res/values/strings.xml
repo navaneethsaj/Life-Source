@@ -24,7 +24,7 @@
     </string-array>
 
     <string-array name="specialization_array">
-        <item>Select Blood Group</item>
+        <item>Select Speciality</item>
         <item>ORTHO</item>
         <item>NEURO</item>
         <item>EUROLOGY</item>

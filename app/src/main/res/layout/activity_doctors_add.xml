@@ -115,6 +115,11 @@
                 android:layout_gravity="bottom"
                 android:id="@+id/speciality"/>
         </LinearLayout>
+        <EditText
+            android:hint="time"
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

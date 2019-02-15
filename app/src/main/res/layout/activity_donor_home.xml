@@ -679,6 +679,7 @@
             android:layout_height="0dp" />
     </LinearLayout>
     <RelativeLayout
+        android:layout_below="@+id/toolbar"
         android:visibility="gone"
         android:layout_above="@id/bottomnavigator"
         android:layout_width="match_parent"

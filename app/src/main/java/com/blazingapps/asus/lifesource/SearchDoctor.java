@@ -120,12 +120,13 @@ public class SearchDoctor extends AppCompatActivity {
                 JSONObject responseObject = new JSONObject(s);
                 Log.d("status", String.valueOf(responseObject.getInt("status")));
                 if (responseObject.getInt("status") == 200) {
-
+                    String spec = spinner.getSelectedItem().toString();
                     String hspname = responseObject.getString("hospital");
                     JSONArray jsonArray = responseObject.getJSONArray("doctors");
                     ArrayList<DoctorObject> doctorObjects = new ArrayList<>();
+                    Toast.makeText(getApplicationContext(),spec,Toast.LENGTH_SHORT).show();
                     for (int i=0;i<jsonArray.length();++i){
-                        if (jsonArray.getJSONObject(i).getString("speciality").equals(spinner.getSelectedItem().toString())) {
+                        if (jsonArray.getJSONObject(i).getString("speciality").equals(spec)) {
                             doctorObjects.add(new DoctorObject(
                                     jsonArray.getJSONObject(i).getString("name"),
                                     jsonArray.getJSONObject(i).getString("speciality"),
